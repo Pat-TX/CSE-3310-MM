@@ -1,7 +1,7 @@
 import React from 'react';
 import { SafeAreaView, View, StyleSheet, Text, TouchableOpacity, Dimensions, Image } from 'react-native';
 
-function Welcome(props) {
+function PreUserLogin({navigation}) {
     return (
         <SafeAreaView style={styles.container}>
 
@@ -61,4 +61,4 @@ const styles = StyleSheet.create({
     },
   });
 
-export default Welcome;
+export default PreUserLogin;
