@@ -1,7 +1,9 @@
 import React from 'react';
 import { SafeAreaView, View, StyleSheet, Text, TouchableOpacity, Dimensions, Image } from 'react-native';
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-function Welcome(props) {
+function Welcome({navigation}) {
     return (
         <SafeAreaView style={styles.container}>
 
@@ -10,11 +12,11 @@ function Welcome(props) {
             source={require('../assets/icon.png')}
           />
 
-          <Text style={styles.header1}>Welcome in</Text>
+          <Text style={styles.header1}>Welcome in!</Text>
           <Text style={styles.header2}>Let's get you to the right place.</Text>
 
           <TouchableOpacity style={styles.buttonStyle}>
-            <Text style={styles.buttonText}>I need auto services</Text>
+            <Text style={styles.buttonText} onPress={() => navigation.navigate('PreUserLogin')}>I need auto services</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.buttonStyle}>
             <Text style={styles.buttonText}>I'm a mechanic</Text>
