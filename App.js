@@ -17,13 +17,13 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Welcome">
-        <Stack.Screen name="Welcome" component={Welcome} />
-        <Stack.Screen name="PreUserLogin" component={PreUserLogin} />
-        <Stack.Screen name="PreMechLogin" component={PreMechLogin} />
-        <Stack.Screen name="UserLogin" component={UserLogin} />
-        <Stack.Screen name="UserRegister" component={UserRegister} />
-        <Stack.Screen name="MechLogin" component={MechLogin} />
-        <Stack.Screen name="MechRegister" component={MechRegister} />
+        <Stack.Screen name="Welcome" component={Welcome} options={{ headerShown: true }} />
+        <Stack.Screen name="PreUserLogin" component={PreUserLogin} options={{ headerShown: true }} />
+        <Stack.Screen name="PreMechLogin" component={PreMechLogin} options={{ headerShown: true }} />
+        <Stack.Screen name="UserLogin" component={UserLogin} options={{ headerShown: true }} />
+        <Stack.Screen name="UserRegister" component={UserRegister} options={{ headerShown: true }} />
+        <Stack.Screen name="MechLogin" component={MechLogin} options={{ headerShown: true }} />
+        <Stack.Screen name="MechRegister" component={MechRegister} options={{ headerShown: true }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
