@@ -4,7 +4,7 @@ import { FIREBASE_AUTH } from '../../../FirebaseConfig';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { styles } from '../style';
 import Modal from "react-native-modal";
-import { Dropdown, MultiSelect } from 'react-native-element-dropdown';
+import { MultiSelect } from 'react-native-element-dropdown';
 
 function MechRegister(props) {
 
