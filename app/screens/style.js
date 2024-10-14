@@ -17,7 +17,7 @@ export const styles = StyleSheet.create({
     },
     buttonStyle: {
       elevation: 8,
-      backgroundColor: "lightblue",
+      backgroundColor: "#435F8E",
       borderRadius: 15,
       paddingVertical: 10,
       width: Dimensions.get('window').width - 50,  
@@ -27,6 +27,7 @@ export const styles = StyleSheet.create({
       fontSize: 18,
       fontWeight: "bold",
       alignSelf: "center",
+      color: 'white',
     },
     logo: {
       alignItems: "center",
