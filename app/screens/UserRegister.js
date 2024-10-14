@@ -12,7 +12,7 @@ function UserRegister(props) {
 
           <Text style={styles.header1}>Registration</Text>
 
-          <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('UserLogin')}>
+          <TouchableOpacity style={styles.buttonStyle}>
             <Text style={styles.buttonText}>Sign up</Text>
           </TouchableOpacity>
 

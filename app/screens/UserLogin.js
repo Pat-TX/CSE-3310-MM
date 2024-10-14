@@ -12,7 +12,7 @@ function UserLogin(props) {
 
           <Text style={styles.header1}>Login</Text>
 
-          <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('UserLogin')}>
+          <TouchableOpacity style={styles.buttonStyle}>
             <Text style={styles.buttonText}>Login</Text>
           </TouchableOpacity>
 
