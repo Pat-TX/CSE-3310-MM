@@ -13,10 +13,10 @@ function PreMechLogin({navigation}) {
           <Text style={styles.header1}>You've got skills.</Text>
           <Text style={styles.header2}>We've got people needing them.</Text>
 
-          <TouchableOpacity style={styles.buttonStyle}>
+          <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('MechLogin')}>
             <Text style={styles.buttonText}>Login</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.buttonStyle}>
+          <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('MechRegister')}>
             <Text style={styles.buttonText}>Register</Text>
           </TouchableOpacity>
 
