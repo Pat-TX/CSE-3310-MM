@@ -45,4 +45,49 @@ export const styles = StyleSheet.create({
       margin: 5,
       width: Dimensions.get('window').width - 50,
     },
+    modal1: {
+      flex: 1,
+      backgroundColor: '#fff',
+      alignItems: 'left',
+      justifyContent: 'center',
+    },
+    modalDesc: {
+      paddingLeft: 15,
+      fontSize: 16,
+    },
+    modalInput: {
+      backgroundColor: '#fff',
+      height: 50,
+      borderRadius: 4,
+      borderWidth: 1,
+      padding: 10,
+      margin: 5,
+      marginBottom: 15,
+      width: Dimensions.get('window').width - 50,
+    },
+    dropdown: {
+      margin: 5,
+      height: 50,
+      borderBottomColor: 'black',
+      borderBottomWidth: 1,
+      width: Dimensions.get('window').width - 50,
+    },
+    placeholderStyle: {
+      fontSize: 16,
+    },
+    selectedTextStyle: {
+      fontSize: 10,
+    },
+    iconStyle: {
+      width: 20,
+      height: 20,
+    },
+    inputSearchStyle: {
+      height: 40,
+      fontSize: 16,
+    },
+    selectedStyle: {
+      borderRadius: 20,
+      margin: 5,
+    },
   });
