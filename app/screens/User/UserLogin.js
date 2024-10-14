@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { SafeAreaView, View, StyleSheet, Text, TouchableOpacity, Dimensions, Image, TextInput, ActivityIndicator } from 'react-native';
 import { FIREBASE_AUTH } from '../../../FirebaseConfig';
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import { styles } from '../style';
 
 function UserLogin(props) {
 
@@ -49,47 +50,5 @@ function UserLogin(props) {
       </SafeAreaView>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#fff',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    header1: {
-      fontSize: 40,
-      paddingBottom: 15,  
-    },
-    buttonStyle: {
-      elevation: 8,
-      backgroundColor: "lightblue",
-      borderRadius: 15,
-      paddingVertical: 10,
-      width: Dimensions.get('window').width - 50,  
-      margin: 10,
-    },
-    buttonText: {
-      fontSize: 18,
-      fontWeight: "bold",
-      alignSelf: "center",
-    },
-    logo: {
-      alignItems: "center",
-      justifyContent: "center",
-      width: 150,
-      height: 150,
-      margin: 20,
-    },
-    input: {
-      backgroundColor: '#fff',
-      height: 50,
-      borderRadius: 4,
-      borderWidth: 1,
-      padding: 10,
-      margin: 5,
-      width: Dimensions.get('window').width - 50,
-    },
-  });
 
 export default UserLogin;
