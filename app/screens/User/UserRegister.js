@@ -48,6 +48,21 @@ function UserRegister(props) {
   // Adding to database logic
   const addToDB = async () => {
     try {
+      const docRef = doc(customersCollection, auth.currentUser.uid);
+      const response = await setDoc(docRef, {
+        uid: auth.currentUser.uid,
+        firstName,
+        lastName,
+        area,
+        role: "customer"
+      });
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  } 
+  /*const addToDB = async () => {
+    try {
       const response = await addDoc(customersCollection, {
         uid: auth.currentUser.uid,
         firstName,
@@ -59,7 +74,7 @@ function UserRegister(props) {
     } catch (error) {
       console.log(error);
     }
-  }
+  }*/
 
   return (
     <SafeAreaView style={styles.container}>

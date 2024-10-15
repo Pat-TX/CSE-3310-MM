@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { SafeAreaView, View, StyleSheet, Text, TouchableOpacity, Dimensions, Image, TextInput, ActivityIndicator } from 'react-native';
-import { FIREBASE_AUTH } from '../../../FirebaseConfig';
+import { FIREBASE_APP, FIREBASE_AUTH, FIREBASE_DB } from '../../../FirebaseConfig';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { styles } from '../style';
+import { where, doc, getDoc, query, collection } from 'firebase/firestore';
+import { customersCollection } from '../../../FirebaseConfig';
 
 function UserLogin(props) {
 
@@ -11,10 +13,23 @@ function UserLogin(props) {
   const [loading, setLoading] = useState(false);
   const auth = FIREBASE_AUTH;
 
+  const db = FIREBASE_DB;
+
   const signIn = async () => {
     setLoading(true);
     try {
       const response = await signInWithEmailAndPassword(auth, email, password);
+      
+      const docRef = doc(db, "customers", auth.currentUser.uid);
+      const docSnapshot = await getDoc(docRef);
+      
+      if(!(docSnapshot.exists()))
+      {
+        throw error = "User not found";
+      }
+
+      //const docRef = doc(db, 'customers').where("uid", "==", auth.currentUser.uid);
+
       console.log(response);
     } catch (error) {
       alert('Sign in failed: ' + error.message);
