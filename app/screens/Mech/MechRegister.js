@@ -8,7 +8,7 @@ import { MultiSelect } from 'react-native-element-dropdown';
 import { addDoc, doc, setDoc } from 'firebase/firestore';
 import { mechsCollection } from '../../../FirebaseConfig';
 
-function MechRegister(props) {
+function MechRegister({navigation}) {
 
   // For auth
   const [email, setEmail] = useState('');
@@ -148,7 +148,7 @@ function MechRegister(props) {
             selectedStyle={styles.selectedStyle}
           />
 
-          <TouchableOpacity style={styles.buttonStyle} onPress={() => { addToDB(); toggleModal(); }}>
+          <TouchableOpacity style={styles.buttonStyle} onPress={() => { addToDB(); toggleModal(); navigation.navigate('MechLogin');}}>
             <Text style={styles.buttonText}>Submit</Text>
           </TouchableOpacity>
         </View>

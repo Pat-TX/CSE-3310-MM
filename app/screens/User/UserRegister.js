@@ -7,7 +7,7 @@ import Modal from "react-native-modal";
 import { addDoc, doc, setDoc } from 'firebase/firestore';
 import { customersCollection } from '../../../FirebaseConfig';
 
-function UserRegister(props) {
+function UserRegister({navigation}) {
 
   // For auth
   const [email, setEmail] = useState('');
@@ -110,7 +110,7 @@ function UserRegister(props) {
           <Text style={styles.modalDesc}>Location</Text>
           <TextInput style={styles.modalInput} value={area} placeholder='Fort Worth, TX' autoCapitalize='none' onChangeText={(text) => setArea(text)}></TextInput>
 
-          <TouchableOpacity style={styles.buttonStyle} onPress={() => { addToDB(); toggleModal(); }}>
+          <TouchableOpacity style={styles.buttonStyle} onPress={() => { addToDB(); toggleModal(); navigation.navigate('UserLogin'); }}>
             <Text style={styles.buttonText}>Submit</Text>
           </TouchableOpacity>
         </View>

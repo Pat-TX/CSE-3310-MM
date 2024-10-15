@@ -5,7 +5,7 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import { styles } from '../style';
 import { doc, getDoc } from 'firebase/firestore';
 
-function UserLogin(props) {
+function UserLogin({navigation}) {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -53,7 +53,7 @@ function UserLogin(props) {
           <ActivityIndicator size="large" color="#0000ff" />
         ) : (
           <>
-            <TouchableOpacity style={styles.buttonStyle} onPress={signIn}>
+            <TouchableOpacity style={styles.buttonStyle} onPress={() => { signIn(); if(auth.currentUser) navigation.navigate('UserHome');}}>
               <Text style={styles.buttonText}>Login</Text>
             </TouchableOpacity>
           </>

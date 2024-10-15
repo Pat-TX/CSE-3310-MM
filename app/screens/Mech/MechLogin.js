@@ -5,7 +5,7 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { styles } from '../style';
 
-function MechLogin(props) {
+function MechLogin({navigation}) {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -53,7 +53,7 @@ function MechLogin(props) {
             <ActivityIndicator size="large" color="#0000ff" />
           ) : (
             <>
-              <TouchableOpacity style={styles.buttonStyle} onPress={signIn}>
+              <TouchableOpacity style={styles.buttonStyle} onPress={() => { signIn(); if(auth.currentUser) navigation.navigate('MechHome');}}>
                 <Text style={styles.buttonText}>Login</Text>
               </TouchableOpacity>
             </>
