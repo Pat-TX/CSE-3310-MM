@@ -78,7 +78,8 @@ function MechRegister(props) {
   // Adding to database logic
   const addToDB = async () => {
     try {
-      const response = await addDoc(mechsCollection, {
+      const docRef = doc(mechsCollection, auth.currentUser.uid);
+      const response = await setDoc(docRef, {
         uid: auth.currentUser.uid,
         firstName,
         lastName,

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { SafeAreaView, View, StyleSheet, Text, TouchableOpacity, Dimensions, Image, TextInput, ActivityIndicator } from 'react-native';
-import { FIREBASE_AUTH } from '../../../FirebaseConfig';
+import { FIREBASE_AUTH, FIREBASE_DB } from '../../../FirebaseConfig';
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import { where, doc, getDoc, query, collection } from 'firebase/firestore';
 import { styles } from '../style';
 
 function MechLogin(props) {
@@ -11,10 +12,21 @@ function MechLogin(props) {
     const [loading, setLoading] = useState(false);
     const auth = FIREBASE_AUTH;
 
+    const db = FIREBASE_DB;
+
     const signIn = async () => {
       setLoading(true);
       try {
         const response = await signInWithEmailAndPassword(auth, email, password);
+
+        const docRef = doc(db, "mechanics", auth.currentUser.uid);
+        const docSnapshot = await getDoc(docRef);
+      
+        if(!(docSnapshot.exists()))
+        {
+          throw error = "User not found";
+        }
+
         console.log(response);
       } catch (error) {
         alert('Sign in failed: ' + error.message);
