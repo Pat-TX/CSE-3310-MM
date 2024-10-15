@@ -8,6 +8,8 @@ import UserLogin from "./app/screens/User/UserLogin";
 import UserRegister from "./app/screens/User/UserRegister";
 import MechLogin from "./app/screens/Mech/MechLogin";
 import MechRegister from "./app/screens/Mech/MechRegister";
+import UserHome from "./app/screens/User/UserHome";
+import MechHome from "./app/screens/Mech/MechHome";
 
 const Stack = createNativeStackNavigator();
 
@@ -24,6 +26,8 @@ export default function App() {
         <Stack.Screen name="UserRegister" component={UserRegister} options={{ headerShown: true }} />
         <Stack.Screen name="MechLogin" component={MechLogin} options={{ headerShown: true }} />
         <Stack.Screen name="MechRegister" component={MechRegister} options={{ headerShown: true }} />
+        <Stack.Screen name="MechHome" component={MechHome} options={{ headerShown: true }} />
+        <Stack.Screen name="UserHome" component={UserHome} options={{ headerShown: true }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
