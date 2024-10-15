@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { SafeAreaView, View, StyleSheet, Text, TouchableOpacity, Dimensions, Image, TextInput, ActivityIndicator } from 'react-native';
-import { FIREBASE_APP, FIREBASE_AUTH, FIREBASE_DB } from '../../../FirebaseConfig';
+import { FIREBASE_AUTH, FIREBASE_DB } from '../../../FirebaseConfig';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { styles } from '../style';
-import { where, doc, getDoc, query, collection } from 'firebase/firestore';
-import { customersCollection } from '../../../FirebaseConfig';
+import { doc, getDoc } from 'firebase/firestore';
 
 function UserLogin(props) {
 
@@ -27,8 +26,6 @@ function UserLogin(props) {
       {
         throw error = "User not found";
       }
-
-      //const docRef = doc(db, 'customers').where("uid", "==", auth.currentUser.uid);
 
       console.log(response);
     } catch (error) {

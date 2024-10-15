@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { SafeAreaView, View, StyleSheet, Text, TouchableOpacity, Dimensions, Image, TextInput, ActivityIndicator } from 'react-native';
 import { FIREBASE_AUTH, FIREBASE_DB } from '../../../FirebaseConfig';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { where, doc, getDoc, query, collection } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import { styles } from '../style';
 
 function MechLogin(props) {
