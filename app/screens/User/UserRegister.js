@@ -1,21 +1,42 @@
 import React, { useState } from 'react';
 import { SafeAreaView, View, StyleSheet, Text, TouchableOpacity, Dimensions, Image, TextInput, ActivityIndicator } from 'react-native';
-import { FIREBASE_AUTH } from '../../../FirebaseConfig';
+import { FIREBASE_AUTH, FIREBASE_DB } from '../../../FirebaseConfig';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { styles } from '../style';
+import Modal from "react-native-modal";
+import { addDoc, doc, setDoc } from 'firebase/firestore';
+import { customersCollection } from '../../../FirebaseConfig';
 
 function UserRegister(props) {
+
+  // For auth
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const auth = FIREBASE_AUTH;
 
+  // For database
+  const db = FIREBASE_DB;
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [area, setArea] = useState('');
+
+  // Profile customization modal, captures data for name, area
+  const [isModalVisible, setModalVisible] = useState(false);
+
+  // Method to enable or disable modal
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  }
+
+  // Registration logic
   const signUp = async () => {
     setLoading(true);
     try {
       const response = await createUserWithEmailAndPassword(auth, email, password);
       console.log(response);
       alert('Check your email to validate account!');
+      toggleModal();
     } catch (error) {
       console.log(error);
       alert('Registration failed: ' + error.message);
@@ -24,31 +45,64 @@ function UserRegister(props) {
     }
   }
 
-    return (
-        <SafeAreaView style={styles.container}>
-          
-          <Image 
-            style={styles.logo}
-            source={require('../../assets/icon.png')}
-          />
+  // Adding to database logic
+  const addToDB = async () => {
+    try {
+      const response = await addDoc(customersCollection, {
+        uid: auth.currentUser.uid,
+        firstName,
+        lastName,
+        area,
+        role: "customer"
+      });
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
-          <Text style={styles.header1}>Registration</Text>
+  return (
+    <SafeAreaView style={styles.container}>
 
-          <TextInput style={styles.input} value={email} placeholder='Email' autoCapitalize='none' onChangeText={(text) => setEmail(text)} ></TextInput>
-          <TextInput style={styles.input} value={password} placeholder='Password' autoCapitalize='none' onChangeText={(text) => setPassword(text)} secureTextEntry={true} ></TextInput>
+      <Image
+        style={styles.logo}
+        source={require('../../assets/icon.png')}
+      />
 
-          {loading ? (
-            <ActivityIndicator size="large" color="#0000ff" />
-          ) : (
-            <>
-              <TouchableOpacity style={styles.buttonStyle} onPress={signUp}>
-                <Text style={styles.buttonText}>Sign up</Text>
-              </TouchableOpacity>
-            </>
-          )}
+      <Text style={styles.header1}>Registration</Text>
 
-        </SafeAreaView>
-      );
+      <TextInput style={styles.input} value={email} placeholder='Email' autoCapitalize='none' onChangeText={(text) => setEmail(text)} ></TextInput>
+      <TextInput style={styles.input} value={password} placeholder='Password' autoCapitalize='none' onChangeText={(text) => setPassword(text)} secureTextEntry={true} ></TextInput>
+
+      {loading ? (
+        <ActivityIndicator size="large" color="#0000ff" />
+      ) : (
+        <>
+          <TouchableOpacity style={styles.buttonStyle} onPress={() => { signUp(); }}>
+            <Text style={styles.buttonText}>Sign up</Text>
+          </TouchableOpacity>
+        </>
+      )}
+
+<Modal isVisible={isModalVisible}>
+        <View style={styles.modal1}>
+          <Text style={[styles.header2, styles.modalDesc]}>Welcome in!</Text>
+
+          <Text style={styles.modalDesc}>First Name</Text>
+          <TextInput style={styles.modalInput} value={firstName} placeholder='John' autoCapitalize='none' onChangeText={(text) => setFirstName(text)}></TextInput>
+          <Text style={styles.modalDesc}>Last Name</Text>
+          <TextInput style={styles.modalInput} value={lastName} placeholder='Smith' autoCapitalize='none' onChangeText={(text) => setLastName(text)}></TextInput>
+          <Text style={styles.modalDesc}>Location</Text>
+          <TextInput style={styles.modalInput} value={area} placeholder='Fort Worth, TX' autoCapitalize='none' onChangeText={(text) => setArea(text)}></TextInput>
+
+          <TouchableOpacity style={styles.buttonStyle} onPress={() => { addToDB(); toggleModal(); }}>
+            <Text style={styles.buttonText}>Submit</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
+
+    </SafeAreaView>
+  );
 }
 
 export default UserRegister;
