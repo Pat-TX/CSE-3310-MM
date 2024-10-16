@@ -4,7 +4,7 @@ import { FIREBASE_AUTH, FIREBASE_DB } from '../../../FirebaseConfig';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { styles } from '../style';
 import Modal from "react-native-modal";
-import { addDoc, doc, setDoc } from 'firebase/firestore';
+import { doc, setDoc } from 'firebase/firestore';
 import { customersCollection } from '../../../FirebaseConfig';
 
 function UserRegister({navigation}) {
@@ -61,20 +61,6 @@ function UserRegister({navigation}) {
       console.log(error);
     }
   } 
-  /*const addToDB = async () => {
-    try {
-      const response = await addDoc(customersCollection, {
-        uid: auth.currentUser.uid,
-        firstName,
-        lastName,
-        area,
-        role: "customer"
-      });
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    }
-  }*/
 
   return (
     <SafeAreaView style={styles.container}>
