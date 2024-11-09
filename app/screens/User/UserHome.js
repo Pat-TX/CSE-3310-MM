@@ -7,6 +7,10 @@ import { NavigationContainer, useNavigation, NavigationIndependentTree } from '@
 
 const Tab = createMaterialTopTabNavigator();
 
+
+// ********************************************************************************************************
+// * This function provides functionality for the tab navigation.                                         *
+// ********************************************************************************************************
 function MyTabs() {
   return (
     <Tab.Navigator tabBarPosition='bottom'>
@@ -17,6 +21,13 @@ function MyTabs() {
   );
 }
 
+
+// ********************************************************************************************************
+// * This function provides functionality for the searching feature.                                      *
+// * See SearchPage.png in the sketches folder for design inspiration. This screen should take a user     *
+// * query, perform the query, and return applicable results to the screen.                               *
+// * SATISFIES: Search, Reporting, Mechanic Profile                                                       *
+// ********************************************************************************************************
 function Search() {
   const navigation = useNavigation();
 
@@ -27,6 +38,13 @@ function Search() {
   );
 }
 
+
+// ********************************************************************************************************
+// * This function provides functionality for the messaging feature.                                      *
+// * See MessagesPage.png and IndividualMessagesPage.png for design inspiration. This screen should       *
+// * First display all of a user's messages history, and upon selection of a specific chat, bring up that *
+// * specific conversation. SATISFIES: Communication, Reporting, Payment                                  *
+// ********************************************************************************************************
 function Messages() {
   const navigation = useNavigation();
 
@@ -37,6 +55,13 @@ function Messages() {
   );
 }
 
+
+// ********************************************************************************************************
+// * This function provides functionality for the profiles  feature.                                      *
+// * See CustomerProfilePage.png for design inspiration. This screen should display applicable info about *
+// * the logged in user, as well as provide functionality to update their information                     *
+// * SATISFIES: User Profile *
+// ********************************************************************************************************
 function Profile() {
   const navigation = useNavigation();
 
@@ -47,11 +72,13 @@ function Profile() {
   );
 }
 
+
+// ********************************************************************************************************
+// * This function serves as the root to this part of the application. Should stay pretty bare bones.     *
+// ********************************************************************************************************
 function UserHome({navigation}) {
     return (
-      
       <MyTabs />
-      
       );
 }
 
