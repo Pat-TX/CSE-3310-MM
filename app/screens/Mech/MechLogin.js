@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { SafeAreaView, View, StyleSheet, Text, TouchableOpacity, Dimensions, Image, TextInput, ActivityIndicator } from 'react-native';
 import { FIREBASE_AUTH, FIREBASE_DB } from '../../../FirebaseConfig';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword, getAuth } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { styles } from '../style';
 
@@ -10,7 +10,7 @@ function MechLogin({navigation}) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
-    const auth = FIREBASE_AUTH;
+    const auth = getAuth();
 
     const db = FIREBASE_DB;
 
@@ -24,10 +24,10 @@ function MechLogin({navigation}) {
       
         if(!(docSnapshot.exists()))
         {
-          throw error = "User not found";
+          throw new Error("User not found");
         }
-
         console.log(response);
+        navigation.navigate('MechHome');
       } catch (error) {
         alert('Sign in failed: ' + error.message);
         console.log(error);
@@ -53,7 +53,7 @@ function MechLogin({navigation}) {
             <ActivityIndicator size="large" color="#0000ff" />
           ) : (
             <>
-              <TouchableOpacity style={styles.buttonStyle} onPress={() => { signIn(); if(auth.currentUser) navigation.navigate('MechHome');}}>
+              <TouchableOpacity style={styles.buttonStyle} onPress={() => { signIn(); }}>
                 <Text style={styles.buttonText}>Login</Text>
               </TouchableOpacity>
             </>
