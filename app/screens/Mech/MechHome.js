@@ -1,26 +1,88 @@
-import React from 'react';
-import { SafeAreaView, View, StyleSheet, Text, TouchableOpacity, Dimensions, Image } from 'react-native';
-import { Button } from '@react-navigation/elements';
-import { styles } from '../style';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { NavigationContainer, useNavigation, NavigationIndependentTree } from '@react-navigation/native';
+import React from "react";
+import {
+  SafeAreaView,
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  Dimensions,
+  Image,
+} from "react-native";
+import { Button } from "@react-navigation/elements";
+import { styles } from "../style";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import {
+  useNavigation,
+} from "@react-navigation/native";
 
-const Tab = createMaterialTopTabNavigator();
-
+const Tab = createBottomTabNavigator();
 
 // ********************************************************************************************************
 // * This function provides functionality for the tab navigation.                                         *
 // ********************************************************************************************************
 function MyTabs() {
   return (
-    <Tab.Navigator tabBarPosition='bottom'>
-      <Tab.Screen name="Appointments" component={Appointments} />
-      <Tab.Screen name="Messages" component={Messages} />
-      <Tab.Screen name="Profile" component={Profile} />
+    <Tab.Navigator
+      tabBarPosition="bottom"
+      screenOptions={{
+        tabBarLabelStyle: {
+          fontSize: 16,
+          fontWeight: 300,
+        },
+        animation: 'shift',
+        tabBarStyle: {
+          height: 60,
+        },
+      }}  
+    >
+      <Tab.Screen
+        name="Appointments"
+        component={Appointments}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ size, focused, color }) => {
+            return (
+              <Image
+                style={{ width: size, height: size }}
+                source={require("../../assets/calendar.png")}
+              />
+            );
+          },
+        }}
+      />
+      <Tab.Screen
+        name="Messages"
+        component={Messages}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ size, focused, color }) => {
+            return (
+              <Image
+                style={{ width: size, height: size }}
+                source={require("../../assets/messages.png")}
+              />
+            );
+          },
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={Profile}
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ size, focused, color }) => {
+            return (
+              <Image
+                style={{ width: size, height: size }}
+                source={require("../../assets/user.png")}
+              />
+            );
+          },
+        }}
+      />
     </Tab.Navigator>
   );
 }
-
 
 // ********************************************************************************************************
 // * This function provides functionality for the appointments feature.                                   *
@@ -31,12 +93,11 @@ function Appointments() {
   const navigation = useNavigation();
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
       <Text>Appointments Screen!</Text>
     </View>
   );
 }
-
 
 // ********************************************************************************************************
 // * This function provides functionality for the messaging feature.                                      *
@@ -48,12 +109,11 @@ function Messages() {
   const navigation = useNavigation();
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
       <Text>Messages Screen!</Text>
     </View>
   );
 }
-
 
 // ********************************************************************************************************
 // * This function provides functionality for the profiles feature.                                       *
@@ -65,20 +125,17 @@ function Profile() {
   const navigation = useNavigation();
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
       <Text>Profile Screen!</Text>
     </View>
   );
 }
 
-
 // *******************************************************************************************************
 // * This function serves as the root to this part of the application. Should stay pretty bare bones.    *
 // *******************************************************************************************************
-function MechHome({navigation}) {
-    return (
-      <MyTabs />
-      );
+function MechHome({ navigation }) {
+  return <MyTabs />;
 }
 
 export default MechHome;
