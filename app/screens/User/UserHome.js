@@ -95,7 +95,7 @@ function Search() {
 
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Search Screen!</Text>
+      <Text>Search Screen! aaaaaaaaaaa</Text>
     </View>
   );
 }
