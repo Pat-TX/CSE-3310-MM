@@ -143,6 +143,9 @@ function Profile() {
               style={userStyles.userImg}
               source={require('../../assets/user.png')}
             />
+            <TouchableOpacity style={userStyles.button} onPress={() => console.log('Button Pressed')}>
+              <Text style={userStyles.buttonText}>+</Text>
+            </TouchableOpacity>
             <View style={userStyles.textContainer}>
               <Text style={userStyles.userName}>Default Name</Text>
               <Text style={userStyles.userLocation}>Default Location</Text>
@@ -166,6 +169,17 @@ const userStyles = StyleSheet.create({
     width: width / 3,
     height: width / 3,
     borderRadius: width / 6,
+  },
+  button: {
+    position: 'absolute',
+    top: -width / 6, // Position the button above the image
+    right: -width / 6, // Position the button to the right
+    width: width / 9, // 1/3 of the radius of the image
+    height: width / 9,
+    borderRadius: width / 18, // Make the button circular
+    backgroundColor: '#007BFF',  // Example color for the button
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   textContainer: {
     marginLeft: 15,
