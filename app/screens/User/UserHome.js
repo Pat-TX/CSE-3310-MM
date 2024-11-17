@@ -143,8 +143,14 @@ function Profile() {
               style={userStyles.userImg}
               source={require('../../assets/user.png')}
             />
-            <TouchableOpacity style={userStyles.button} onPress={() => console.log('Button Pressed')}>
-              <Text style={userStyles.buttonText}>+</Text>
+            <TouchableOpacity 
+              style={userStyles.button} 
+              onPress={() => console.log('Button Pressed')}
+            >
+              <Image
+                source={require('../../assets/pencil.png')}
+                style={userStyles.buttonImage}
+              />
             </TouchableOpacity>
             <View style={userStyles.textContainer}>
               <Text style={userStyles.userName}>Default Name</Text>
@@ -164,6 +170,7 @@ const userStyles = StyleSheet.create({
     marginTop: 10,
     marginLeft: 10,
     width: '100%',
+    position: 'relative',
   },
   userImg: {
     width: width / 3,
@@ -172,14 +179,17 @@ const userStyles = StyleSheet.create({
   },
   button: {
     position: 'absolute',
-    top: -width / 6, // Position the button above the image
-    right: -width / 6, // Position the button to the right
-    width: width / 9, // 1/3 of the radius of the image
-    height: width / 9,
-    borderRadius: width / 18, // Make the button circular
-    backgroundColor: '#007BFF',  // Example color for the button
-    justifyContent: 'center',
-    alignItems: 'center',
+    top: 10,
+    right: 10,
+    width: width / 18,
+    height: width / 18,
+    overflow: 'hidden',
+    zIndex: 1,
+  },
+  buttonImage: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'contain',
   },
   textContainer: {
     marginLeft: 15,
