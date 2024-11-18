@@ -8,13 +8,11 @@ import {
   Dimensions,
   Image,
   ScrollView,
-  ActivityIndicator,
 } from "react-native";
 import { Button } from "@react-navigation/elements";
 import { styles } from "../style";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { useNavigation } from "@react-navigation/native";
-import { getFirestore, doc, getDoc } from 'firebase/firestore';
 
 const Tab = createBottomTabNavigator();
 
@@ -123,7 +121,6 @@ function Messages() {
 // * the logged in user, as well as provide functionality to update their information                     *
 // * SATISFIES: User Profile *
 // ********************************************************************************************************
-
 function Profile() {
   const navigation = useNavigation();
 

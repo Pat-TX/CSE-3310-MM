@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import { collection, getFirestore } from "firebase/firestore";
 
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -23,5 +23,3 @@ export const FIREBASE_DB = getFirestore(FIREBASE_APP);
 
 export const mechsCollection = collection(FIREBASE_DB, 'mechanics');
 export const customersCollection = collection(FIREBASE_DB, 'customers');
-
-const user = FIREBASE_AUTH.currentUser;
