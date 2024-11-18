@@ -1,7 +1,5 @@
 import { StyleSheet, Dimensions } from "react-native";
 
-const {height, width} = Dimensions.get('window');
-
 export const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -91,46 +89,5 @@ export const styles = StyleSheet.create({
     selectedStyle: {
       borderRadius: 20,
       margin: 5,
-    },
-    userProfileContainer: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      marginTop: 10,
-      marginLeft: 15,
-      width: '100%',
-      position: 'relative',
-    },
-    userImg: {
-      width: width / 3,
-      height: width / 3,
-      borderRadius: width / 6,
-    },
-    editUserButton: {
-      position: 'absolute',
-      top: 15,
-      right: 20,
-      width: width / 18,
-      height: width / 18,
-      overflow: 'hidden',
-      zIndex: 1,
-    },
-    editUserButtonImage: {
-      width: '100%',
-      height: '100%',
-      resizeMode: 'contain',
-    },
-    userTextContainer: {
-      marginLeft: 15,
-    },
-    userName: {
-      fontSize: 24,
-      fontWeight: 'bold',
-      left: 0.2,
-    },
-    userLocation: {
-      fontSize: 16,
-      color: 'gray',
-      marginTop: 10,
-      left: 0.2,
     },
   });

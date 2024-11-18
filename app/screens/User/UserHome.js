@@ -1,4 +1,4 @@
-import React,  { useState, useEffect } from "react";
+import React from "react";
 import {
   SafeAreaView,
   View,
@@ -13,10 +13,21 @@ import {
 import { Button } from "@react-navigation/elements";
 import { styles } from "../style";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+<<<<<<< HEAD
 import { useNavigation } from "@react-navigation/native";
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
+=======
+import {
+  useNavigation,
+} from "@react-navigation/native";
+>>>>>>> parent of a143a2f (moved styling changes to styles tab)
 
 const Tab = createBottomTabNavigator();
+
+// ********************************************************************************************************
+// * This function gets the screen dimensions                                                             *
+// ********************************************************************************************************
+const {height, width} = Dimensions.get('window');
 
 // ********************************************************************************************************
 // * This function provides functionality for the tab navigation.                                         *
@@ -134,23 +145,23 @@ function Profile() {
           contentContainerStyle={{ alignItems: "center"}} // Allow centering the text below the image
           showsVerticalScrollIndicator={false}
         >
-          <View style={styles.userProfileContainer}>
+          <View style={userStyles.profileContainer}>
             <Image
-              style={styles.userImg}
+              style={userStyles.userImg}
               source={require('../../assets/user.png')}
             />
             <TouchableOpacity 
-              style={styles.editUserButton} 
+              style={userStyles.button} 
               onPress={() => console.log('Button Pressed')}
             >
               <Image
                 source={require('../../assets/pencil.png')}
-                style={styles.editUserButtonImage}
+                style={userStyles.buttonImage}
               />
             </TouchableOpacity>
-            <View style={styles.userTextContainer}>
-              <Text style={styles.userName}>Default Name</Text>
-              <Text style={styles.userLocation}>Default Location</Text>
+            <View style={userStyles.textContainer}>
+              <Text style={userStyles.userName}>Default Name</Text>
+              <Text style={userStyles.userLocation}>Default Location</Text>
             </View>
           </View>
         </ScrollView>
@@ -158,6 +169,48 @@ function Profile() {
     </View>
   );
 }
+
+const userStyles = StyleSheet.create({
+  profileContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 10,
+    marginLeft: 10,
+    width: '100%',
+    position: 'relative',
+  },
+  userImg: {
+    width: width / 3,
+    height: width / 3,
+    borderRadius: width / 6,
+  },
+  button: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    width: width / 18,
+    height: width / 18,
+    overflow: 'hidden',
+    zIndex: 1,
+  },
+  buttonImage: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'contain',
+  },
+  textContainer: {
+    marginLeft: 15,
+  },
+  userName: {
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
+  userLocation: {
+    fontSize: 16,
+    color: 'gray',
+    marginTop: 10,
+  },
+});
 
 // ********************************************************************************************************
 // * This function serves as the root to this part of the application. Should stay pretty bare bones.     *
