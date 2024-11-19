@@ -193,4 +193,51 @@ export const styles = StyleSheet.create({
       height: 70,
       marginBottom: 5,
     },
+    modalContainer: {
+      flex: 1,
+      backgroundColor: "#fff",
+      padding: 20,
+    },
+    modalTitle: {
+      fontSize: 22,
+      fontWeight: "bold",
+      marginBottom: 20,
+    },
+    closeButton: {
+      backgroundColor: "#007BFF",
+      padding: 10,
+      borderRadius: 5,
+      alignSelf: "flex-end",
+    },
+    closeButtonText: {
+      color: "#fff",
+      fontWeight: "bold",
+    },
+    mechanicCard: {
+      backgroundColor: "#f9f9f9",
+      padding: 15,
+      marginVertical: 10,
+      borderRadius: 10,
+      elevation: 3,
+    },
+    mechanicName: {
+      fontSize: 18,
+      fontWeight: "bold",
+    },
+    mechanicLocation: {
+      fontSize: 16,
+      color: "#666",
+    },
+    mechanicRole: {
+      fontSize: 14,
+      fontStyle: "italic",
+    },
+    suggestionItem: {
+      padding: 10,
+      borderBottomColor: 'gray',
+      borderBottomWidth: 1,
+    },
+    suggestionText: {
+      fontSize: 16,
+    },
   });

@@ -8,14 +8,23 @@ import {
   Dimensions,
   Image,
   ScrollView,
-  TextInput
+  TextInput,
+  Modal,
+  FlatList
 } from "react-native";
 import { Button } from "@react-navigation/elements";
 import { styles } from "../style";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { useNavigation } from "@react-navigation/native";
 import { getAuth } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  collection,
+  query,
+  where,
+  getDocs,
+} from "firebase/firestore";
 import { FIREBASE_DB } from "../../../FirebaseConfig";
 
 const Tab = createBottomTabNavigator();
@@ -94,86 +103,171 @@ function MyTabs() {
 // * SATISFIES: Search, Reporting, Mechanic Profile                                                       *
 // ********************************************************************************************************
 function Search() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [modalVisible, setModalVisible] = useState(false);
+  const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const handleSearch = async (param) => {
+    if (!param.trim()) {
+      alert("Please enter a service to search!");
+      return;
+    }
+  
+    setLoading(true);
+    setModalVisible(true);
+  
+    try {
+      const mechanicsRef = collection(FIREBASE_DB, "mechanics");
+      const mechanicsQuery = query(
+        mechanicsRef,
+        where("servicesOffered", "array-contains", param)
+      );
+  
+      const querySnapshot = await getDocs(mechanicsQuery);
+      const mechanics = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+  
+      setResults(mechanics);
+    } catch (error) {
+      console.error("Error fetching mechanics: ", error);
+      alert("Error fetching mechanics!");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const navigation = useNavigation();
 
   return (
     <View>
-    <SafeAreaView>
-      <ScrollView
-        contentContainerStyle={{ alignItems: "center" }} // Allow centering the text below the image
-        showsVerticalScrollIndicator={false}
-      >
-        
-        <Text style={styles.searchTitle}>
-          Find local mechanics ready to take care of your automotive needs.
-        </Text>
-       
+      <SafeAreaView>
+        <ScrollView
+          contentContainerStyle={{ alignItems: "center" }} // Allow centering the text below the image
+          showsVerticalScrollIndicator={false}
+        >
+          <Text style={styles.searchTitle}>
+            Find local mechanics ready to take care of your automotive needs.
+          </Text>
 
-        <TextInput style={styles.input} placeholder='Enter to search services!' autoCapitalize='none'></TextInput>
-        <TouchableOpacity style={styles.buttonStyle}>
-          <Text style={styles.buttonText}>Search</Text>
-        </TouchableOpacity>
-        
-        <Text style={styles.searchTitle}>Top searched services</Text>
-        
-        <View style={styles.gridContainer}>
-            {/* Row 1 */}
+          <TextInput
+            style={styles.input}
+            placeholder="Enter to search services!"
+            autoCapitalize="none"
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+          ></TextInput>
+          <TouchableOpacity style={styles.buttonStyle}
+          onPress={() => handleSearch(searchQuery)}>
+            <Text style={styles.buttonText}>Search</Text>
+          </TouchableOpacity>
+
+          <Text style={styles.searchTitle}>Top searched services</Text>
+
+          <View style={styles.gridContainer}>
             <View style={styles.row}>
-              <TouchableOpacity style={styles.serviceButton}>
+              <TouchableOpacity
+                style={styles.serviceButton}
+                onPress={() => handleSearch("Oil Changes")}
+              >
                 <Image
-                  source={require('../../assets/oil.png')}
+                  source={require("../../assets/oil.png")}
                   style={styles.buttonImage}
                 />
                 <Text style={styles.serviceButtonText}>Oil Changes</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.serviceButton}>
+              <TouchableOpacity style={styles.serviceButton}
+              onPress={() => handleSearch("Tire Services")}>
                 <Image
-                  source={require('../../assets/wheel.png')}
+                  source={require("../../assets/wheel.png")}
                   style={styles.buttonImage}
                 />
                 <Text style={styles.serviceButtonText}>Tire Services</Text>
               </TouchableOpacity>
             </View>
 
-            {/* Row 2 */}
             <View style={styles.row}>
-              <TouchableOpacity style={styles.serviceButton}>
+              <TouchableOpacity style={styles.serviceButton}
+              onPress={() => handleSearch("Brake Services")}>
                 <Image
-                  source={require('../../assets/brake.png')}
+                  source={require("../../assets/brake.png")}
                   style={styles.buttonImage}
                 />
                 <Text style={styles.serviceButtonText}>Brake Services</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.serviceButton}>
+              <TouchableOpacity style={styles.serviceButton}
+              onPress={() => handleSearch("Battery Replacement")}>
                 <Image
-                  source={require('../../assets/car-battery.png')}
+                  source={require("../../assets/car-battery.png")}
                   style={styles.buttonImage}
                 />
-                <Text style={styles.serviceButtonText}>Battery Replacement</Text>
+                <Text style={styles.serviceButtonText}>
+                  Battery Replacement
+                </Text>
               </TouchableOpacity>
             </View>
 
-            {/* Row 3 */}
             <View style={styles.row}>
-              <TouchableOpacity style={styles.serviceButton}>
+              <TouchableOpacity style={styles.serviceButton}
+              onPress={() => handleSearch("Alignment and Balancing")}>
                 <Image
-                  source={require('../../assets/stability.png')}
+                  source={require("../../assets/stability.png")}
                   style={styles.buttonImage}
                 />
                 <Text style={styles.serviceButtonText}>Alignment</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.serviceButton}>
+              <TouchableOpacity style={styles.serviceButton}
+              onPress={() => handleSearch("Inspection Services")}>
                 <Image
-                  source={require('../../assets/list.png')}
+                  source={require("../../assets/list.png")}
                   style={styles.buttonImage}
                 />
-                <Text style={styles.serviceButtonText}>Inspection Services</Text>
+                <Text style={styles.serviceButtonText}>
+                  Inspection Services
+                </Text>
               </TouchableOpacity>
             </View>
           </View>
 
-      </ScrollView>
-    </SafeAreaView>
+          <Modal
+            visible={modalVisible}
+            animationType="slide"
+            onRequestClose={() => setModalVisible(false)}
+          >
+            <View style={styles.modalContainer}>
+              <Text style={styles.modalTitle}>Search Results</Text>
+              <TouchableOpacity
+                style={styles.buttonStyle}
+                onPress={() => setModalVisible(false)}
+              >
+                <Text style={styles.buttonText}>Close</Text>
+              </TouchableOpacity>
+
+              {loading ? (
+                <Text>Loading...</Text>
+              ) : results.length > 0 ? (
+                <ScrollView>
+                  {results.map((mechanic) => (
+                    <View key={mechanic.id} style={styles.mechanicCard}>
+                      <Text style={styles.mechanicName}>
+                        {mechanic.firstName} {mechanic.lastName}
+                      </Text>
+                      <Text style={styles.mechanicLocation}>
+                        {mechanic.serviceArea}
+                      </Text>
+                    </View>
+                  ))}
+                </ScrollView>
+              ) : (
+                <Text>No mechanics found.</Text>
+              )}
+            </View>
+          </Modal>
+
+        </ScrollView>
+      </SafeAreaView>
     </View>
   );
 }
