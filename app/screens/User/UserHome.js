@@ -8,6 +8,7 @@ import {
   Dimensions,
   Image,
   ScrollView,
+  TextInput
 } from "react-native";
 import { Button } from "@react-navigation/elements";
 import { styles } from "../style";
@@ -96,13 +97,23 @@ function Search() {
   const navigation = useNavigation();
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView>
-        <Text style={styles.header2}>
+    <View>
+    <SafeAreaView>
+      <ScrollView
+        contentContainerStyle={{ alignItems: "center" }} // Allow centering the text below the image
+        showsVerticalScrollIndicator={false}
+      >
+        <Text style={styles.searchTitle}>
           Find local mechanics ready to take care of your automotive needs.
         </Text>
+
+        <TextInput style={styles.input} placeholder='Enter to search services!' autoCapitalize='none'></TextInput>
+        <TouchableOpacity style={styles.buttonStyle}>
+          <Text style={styles.buttonText}>Search</Text>
+        </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
+    </View>
   );
 }
 

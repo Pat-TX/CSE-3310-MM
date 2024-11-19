@@ -153,4 +153,11 @@ export const styles = StyleSheet.create({
     star: {
       marginHorizontal: 3,
     },
+    searchTitle: {
+      fontSize: 20,
+      paddingBottom: 40,
+      paddingTop: 40,
+      paddingLeft: 20,
+      paddingRight: 20,  
+    },
   });
