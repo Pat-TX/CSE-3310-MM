@@ -228,16 +228,4 @@ export const styles = StyleSheet.create({
       fontSize: 16,
       color: "#666",
     },
-    mechanicRole: {
-      fontSize: 14,
-      fontStyle: "italic",
-    },
-    suggestionItem: {
-      padding: 10,
-      borderBottomColor: 'gray',
-      borderBottomWidth: 1,
-    },
-    suggestionText: {
-      fontSize: 16,
-    },
   });
