@@ -1,4 +1,4 @@
-import React,  { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   SafeAreaView,
   View,
@@ -8,11 +8,15 @@ import {
   Dimensions,
   Image,
   ScrollView,
+  TextInput
 } from "react-native";
 import { Button } from "@react-navigation/elements";
 import { styles } from "../style";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { useNavigation } from "@react-navigation/native";
+import { getAuth } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
+import { FIREBASE_DB } from "../../../FirebaseConfig";
 
 const Tab = createBottomTabNavigator();
 
@@ -28,11 +32,11 @@ function MyTabs() {
           fontSize: 16,
           fontWeight: 300,
         },
-        animation: 'shift',
+        animation: "shift",
         tabBarStyle: {
           height: 60,
         },
-      }}  
+      }}
     >
       <Tab.Screen
         name="Search"
@@ -93,8 +97,22 @@ function Search() {
   const navigation = useNavigation();
 
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Search Screen!</Text>
+    <View>
+    <SafeAreaView>
+      <ScrollView
+        contentContainerStyle={{ alignItems: "center" }} // Allow centering the text below the image
+        showsVerticalScrollIndicator={false}
+      >
+        <Text style={styles.searchTitle}>
+          Find local mechanics ready to take care of your automotive needs.
+        </Text>
+
+        <TextInput style={styles.input} placeholder='Enter to search services!' autoCapitalize='none'></TextInput>
+        <TouchableOpacity style={styles.buttonStyle}>
+          <Text style={styles.buttonText}>Search</Text>
+        </TouchableOpacity>
+      </ScrollView>
+    </SafeAreaView>
     </View>
   );
 }
@@ -119,35 +137,73 @@ function Messages() {
 // * This function provides functionality for the profiles  feature.                                      *
 // * See CustomerProfilePage.png for design inspiration. This screen should display applicable info about *
 // * the logged in user, as well as provide functionality to update their information                     *
-// * SATISFIES: User Profile *
+// * SATISFIES: User Profile                                                                              *
 // ********************************************************************************************************
 function Profile() {
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const auth = getAuth();
+  const db = FIREBASE_DB;
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const currentUser = auth.currentUser;
+        if (currentUser) {
+          const userDocRef = doc(db, "customers", currentUser.uid);
+          const userDoc = await getDoc(userDocRef);
+
+          if (userDoc.exists()) {
+            setUserData(userDoc.data());
+          } else {
+            console.error("No such document!");
+          }
+        } else {
+          console.error("No authenticated user found");
+        }
+      } catch (error) {
+        console.error("Error fetching user data: ", error);
+      } finally {
+        setLoading(false); // Stop loading once the fetch is done
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+  // Display loading indicator while fetching data
+  if (loading) {
+    return <Text>Loading profile...</Text>;
+  }
+
   const navigation = useNavigation();
 
   return (
     <View style={{ flex: 1 }}>
-      <SafeAreaView style={{ flex: 1, backgroundColor: 'fff' }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: "fff" }}>
         <ScrollView
-          contentContainerStyle={{ alignItems: "center"}} // Allow centering the text below the image
+          contentContainerStyle={{ alignItems: "center" }} // Allow centering the text below the image
           showsVerticalScrollIndicator={false}
         >
           <View style={styles.userProfileContainer}>
             <Image
               style={styles.userImg}
-              source={require('../../assets/user.png')}
+              source={require("../../assets/user.png")}
             />
-            <TouchableOpacity 
-              style={styles.editUserButton} 
-              onPress={() => console.log('Button Pressed')}
+            <TouchableOpacity
+              style={styles.editUserButton}
+              onPress={() => console.log("Button Pressed")}
             >
               <Image
-                source={require('../../assets/pencil.png')}
+                source={require("../../assets/pencil.png")}
                 style={styles.editUserButtonImage}
               />
             </TouchableOpacity>
             <View style={styles.userTextContainer}>
-              <Text style={styles.userName}>Default Name</Text>
-              <Text style={styles.userLocation}>Default Location</Text>
+              <Text style={styles.userName}>
+                {userData?.firstName || "N/A"} {userData?.lastName || "N/A"}
+              </Text>
+              <Text style={styles.userLocation}>{userData?.area || "N/A"}</Text>
             </View>
           </View>
         </ScrollView>
