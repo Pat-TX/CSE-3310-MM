@@ -1,4 +1,4 @@
-import React,  { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   SafeAreaView,
   View,
@@ -13,9 +13,9 @@ import { Button } from "@react-navigation/elements";
 import { styles } from "../style";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { useNavigation } from "@react-navigation/native";
-import { getAuth } from 'firebase/auth';
-import { doc, getDoc } from 'firebase/firestore';
-import { FIREBASE_DB } from '../../../FirebaseConfig';
+import { getAuth } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
+import { FIREBASE_DB } from "../../../FirebaseConfig";
 
 const Tab = createBottomTabNavigator();
 
@@ -31,11 +31,11 @@ function MyTabs() {
           fontSize: 16,
           fontWeight: 300,
         },
-        animation: 'shift',
+        animation: "shift",
         tabBarStyle: {
           height: 60,
         },
-      }}  
+      }}
     >
       <Tab.Screen
         name="Search"
@@ -96,9 +96,13 @@ function Search() {
   const navigation = useNavigation();
 
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Search Screen!</Text>
-    </View>
+    <SafeAreaView style={styles.container}>
+      <ScrollView>
+        <Text style={styles.header2}>
+          Find local mechanics ready to take care of your automotive needs.
+        </Text>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
@@ -125,7 +129,6 @@ function Messages() {
 // * SATISFIES: User Profile                                                                              *
 // ********************************************************************************************************
 function Profile() {
-
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const auth = getAuth();
@@ -136,16 +139,16 @@ function Profile() {
       try {
         const currentUser = auth.currentUser;
         if (currentUser) {
-          const userDocRef = doc(db, 'customers', currentUser.uid);
+          const userDocRef = doc(db, "customers", currentUser.uid);
           const userDoc = await getDoc(userDocRef);
 
           if (userDoc.exists()) {
             setUserData(userDoc.data());
           } else {
-            console.error('No such document!');
+            console.error("No such document!");
           }
         } else {
-          console.error('No authenticated user found');
+          console.error("No authenticated user found");
         }
       } catch (error) {
         console.error("Error fetching user data: ", error);
@@ -164,31 +167,32 @@ function Profile() {
 
   const navigation = useNavigation();
 
-
   return (
     <View style={{ flex: 1 }}>
-      <SafeAreaView style={{ flex: 1, backgroundColor: 'fff' }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: "fff" }}>
         <ScrollView
-          contentContainerStyle={{ alignItems: "center"}} // Allow centering the text below the image
+          contentContainerStyle={{ alignItems: "center" }} // Allow centering the text below the image
           showsVerticalScrollIndicator={false}
         >
           <View style={styles.userProfileContainer}>
             <Image
               style={styles.userImg}
-              source={require('../../assets/user.png')}
+              source={require("../../assets/user.png")}
             />
-            <TouchableOpacity 
-              style={styles.editUserButton} 
-              onPress={() => console.log('Button Pressed')}
+            <TouchableOpacity
+              style={styles.editUserButton}
+              onPress={() => console.log("Button Pressed")}
             >
               <Image
-                source={require('../../assets/pencil.png')}
+                source={require("../../assets/pencil.png")}
                 style={styles.editUserButtonImage}
               />
             </TouchableOpacity>
             <View style={styles.userTextContainer}>
-              <Text style={styles.userName}>{userData?.firstName || 'N/A'} {userData?.lastName || 'N/A'}</Text>
-              <Text style={styles.userLocation}>{userData?.area || 'N/A'}</Text>
+              <Text style={styles.userName}>
+                {userData?.firstName || "N/A"} {userData?.lastName || "N/A"}
+              </Text>
+              <Text style={styles.userLocation}>{userData?.area || "N/A"}</Text>
             </View>
           </View>
         </ScrollView>
