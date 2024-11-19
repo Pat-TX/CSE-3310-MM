@@ -103,14 +103,75 @@ function Search() {
         contentContainerStyle={{ alignItems: "center" }} // Allow centering the text below the image
         showsVerticalScrollIndicator={false}
       >
+        
         <Text style={styles.searchTitle}>
           Find local mechanics ready to take care of your automotive needs.
         </Text>
+       
 
         <TextInput style={styles.input} placeholder='Enter to search services!' autoCapitalize='none'></TextInput>
         <TouchableOpacity style={styles.buttonStyle}>
           <Text style={styles.buttonText}>Search</Text>
         </TouchableOpacity>
+        
+        <Text style={styles.searchTitle}>Top searched services</Text>
+        
+        <View style={styles.gridContainer}>
+            {/* Row 1 */}
+            <View style={styles.row}>
+              <TouchableOpacity style={styles.serviceButton}>
+                <Image
+                  source={{ uri: 'https://example.com/oil-change-icon.png' }}
+                  style={styles.buttonImage}
+                />
+                <Text style={styles.serviceButtonText}>Oil Changes</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.serviceButton}>
+                <Image
+                  source={{ uri: 'https://example.com/tire-replacement-icon.png' }}
+                  style={styles.buttonImage}
+                />
+                <Text style={styles.serviceButtonText}>Tire Services</Text>
+              </TouchableOpacity>
+            </View>
+
+            {/* Row 2 */}
+            <View style={styles.row}>
+              <TouchableOpacity style={styles.serviceButton}>
+                <Image
+                  source={{ uri: 'https://example.com/brake-service-icon.png' }}
+                  style={styles.buttonImage}
+                />
+                <Text style={styles.serviceButtonText}>Brake Services</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.serviceButton}>
+                <Image
+                  source={{ uri: 'https://example.com/battery-check-icon.png' }}
+                  style={styles.buttonImage}
+                />
+                <Text style={styles.serviceButtonText}>Battery Replacement</Text>
+              </TouchableOpacity>
+            </View>
+
+            {/* Row 3 */}
+            <View style={styles.row}>
+              <TouchableOpacity style={styles.serviceButton}>
+                <Image
+                  source={{ uri: 'https://example.com/alignment-icon.png' }}
+                  style={styles.buttonImage}
+                />
+                <Text style={styles.serviceButtonText}>Alignment</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.serviceButton}>
+                <Image
+                  source={{ uri: 'https://example.com/ac-repair-icon.png' }}
+                  style={styles.buttonImage}
+                />
+                <Text style={styles.serviceButtonText}>Inspection Services</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+
       </ScrollView>
     </SafeAreaView>
     </View>

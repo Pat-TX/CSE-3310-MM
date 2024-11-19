@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
     },
     buttonStyle: {
       elevation: 8,
-      backgroundColor: "#435F8E",
+      backgroundColor: "#007aff",
       borderRadius: 15,
       paddingVertical: 10,
       width: Dimensions.get('window').width - 50,  
@@ -159,5 +159,37 @@ export const styles = StyleSheet.create({
       paddingTop: 40,
       paddingLeft: 20,
       paddingRight: 20,  
+    },
+    gridContainer: {
+      marginTop: 20,
+      width: '90%',
+    },
+    row: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginBottom: 15,
+    },
+    serviceButton: {
+      backgroundColor: '#f0f0f0',
+      width: '48%', // Each button takes 48% of the container width
+      height: 150,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderRadius: 8,
+      shadowColor: '#000', // Shadow color
+      shadowOffset: { width: 0, height: 2 }, // Offset for shadow
+      shadowOpacity: 0.3, // Opacity of the shadow
+      shadowRadius: 4, // Blur radius of the shadow
+      elevation: 3, // Required for Android to enable shadows
+    },
+    serviceButtonText: {
+      fontSize: 16,
+      fontWeight: '600',
+      textAlign: 'center',
+    },
+    buttonImage: {
+      width: 40,
+      height: 40,
+      marginBottom: 5,
     },
   });
