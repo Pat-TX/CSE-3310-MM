@@ -12,7 +12,6 @@ import {
 import { styles } from '../mechstyle';
 const { width } = Dimensions.get('window');
 
-
 const sampleAppointments = [
   { id: 1, customer: 'Margaret Roche', time: '10:00 AM', service: 'Oil Change', contact: '123-456-7890', date: new Date() },
   { id: 2, customer: 'Sujana Kabir', time: '11:30 AM', service: 'Tire Replacement', contact: '903-654-2024', date: new Date() },
@@ -22,6 +21,7 @@ const sampleAppointments = [
 export default function MechanicAppointments() {
   const [value, setValue] = useState(new Date());
   const [week, setWeek] = useState(0);
+  const [completedAppointments, setCompletedAppointments] = useState({});
   const flatListRef = useRef(null);
 
   const getStartOfWeek = (date) => {
@@ -77,6 +77,10 @@ export default function MechanicAppointments() {
   const filteredAppointments = sampleAppointments.filter(
     (appointment) => appointment.date.toDateString() === value.toDateString()
   );
+
+  const markAsCompleted = (id) => {
+    setCompletedAppointments((prev) => ({ ...prev, [id]: true }));
+  };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -151,20 +155,34 @@ export default function MechanicAppointments() {
           <FlatList
             data={filteredAppointments}
             keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => (
-              <View style={styles.appointmentCard}>
-                <Text style={styles.cardTitle}>{item.customer}</Text>
-                <Text style={styles.cardText}>Time: {item.time}</Text>
-                <Text style={styles.cardText}>Service: {item.service}</Text>
-                <Text style={styles.cardText}>Contact: {item.contact}</Text>
-                <TouchableOpacity
-                  style={styles.actionButton}
-                  onPress={() => console.log(`Completed ${item.id}`)}
-                >
-                  <Text style={styles.actionButtonText}>Mark as Completed</Text>
-                </TouchableOpacity>
-              </View>
-            )}
+            renderItem={({ item }) => {
+              const isCompleted = completedAppointments[item.id];
+              return (
+                <View style={styles.appointmentCard}>
+                  <Text style={styles.cardTitle}>{item.customer}</Text>
+                  <Text style={styles.cardText}>Time: {item.time}</Text>
+                  <Text style={styles.cardText}>Service: {item.service}</Text>
+                  <Text style={styles.cardText}>Contact: {item.contact}</Text>
+                  <TouchableOpacity
+                    style={[
+                      styles.actionButton,
+                      isCompleted && { backgroundColor: '#4CAF50' }, 
+                    ]}
+                    onPress={() => markAsCompleted(item.id)}
+                    disabled={isCompleted}
+                  >
+                    <Text
+                      style={[
+                        styles.actionButtonText,
+                        isCompleted && { color: '#fff' }, 
+                      ]}
+                    >
+                      {isCompleted ? 'Completed' : 'Mark as Completed'}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              );
+            }}
             ListEmptyComponent={
               <Text style={styles.noAppointments}>
                 No upcoming appointments
@@ -176,4 +194,3 @@ export default function MechanicAppointments() {
     </SafeAreaView>
   );
 }
-
