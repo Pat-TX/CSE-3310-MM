@@ -94,7 +94,8 @@ export const styles = StyleSheet.create({
     },
     userProfileContainer: {
       flexDirection: 'row',
-      alignItems: 'center',
+      alignItems: 'flex-start',
+      justifyContent: 'flex-start',
       marginTop: 10,
       marginLeft: 15,
       width: '100%',
@@ -120,17 +121,36 @@ export const styles = StyleSheet.create({
       resizeMode: 'contain',
     },
     userTextContainer: {
-      marginLeft: 15,
+      marginLeft: 20,
+      justifyContent: 'flex-start',
+      alignItems: 'flex-start',
     },
     userName: {
       fontSize: 24,
       fontWeight: 'bold',
-      left: 0.2,
+      marginTop: 0,
     },
     userLocation: {
       fontSize: 16,
       color: 'gray',
-      marginTop: 10,
-      left: 0.2,
+      marginTop: 5,
+    },
+    mechBar: {
+      height: 5,
+      backgroundColor: 'light gray',
+      marginTop: 20,
+      width: '100%',
+    },
+    starContainer: {
+      position: 'absolute',
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      justifyContent: 'flex-start',
+      marginLeft: 0,
+      marginTop: 5,
+      bottom: -65,
+    },
+    star: {
+      marginHorizontal: 3,
     },
   });
