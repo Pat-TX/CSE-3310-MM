@@ -121,14 +121,14 @@ function Search() {
             <View style={styles.row}>
               <TouchableOpacity style={styles.serviceButton}>
                 <Image
-                  source={{ uri: 'https://example.com/oil-change-icon.png' }}
+                  source={require('../../assets/oil.png')}
                   style={styles.buttonImage}
                 />
                 <Text style={styles.serviceButtonText}>Oil Changes</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.serviceButton}>
                 <Image
-                  source={{ uri: 'https://example.com/tire-replacement-icon.png' }}
+                  source={require('../../assets/wheel.png')}
                   style={styles.buttonImage}
                 />
                 <Text style={styles.serviceButtonText}>Tire Services</Text>
@@ -139,14 +139,14 @@ function Search() {
             <View style={styles.row}>
               <TouchableOpacity style={styles.serviceButton}>
                 <Image
-                  source={{ uri: 'https://example.com/brake-service-icon.png' }}
+                  source={require('../../assets/brake.png')}
                   style={styles.buttonImage}
                 />
                 <Text style={styles.serviceButtonText}>Brake Services</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.serviceButton}>
                 <Image
-                  source={{ uri: 'https://example.com/battery-check-icon.png' }}
+                  source={require('../../assets/car-battery.png')}
                   style={styles.buttonImage}
                 />
                 <Text style={styles.serviceButtonText}>Battery Replacement</Text>
@@ -157,14 +157,14 @@ function Search() {
             <View style={styles.row}>
               <TouchableOpacity style={styles.serviceButton}>
                 <Image
-                  source={{ uri: 'https://example.com/alignment-icon.png' }}
+                  source={require('../../assets/stability.png')}
                   style={styles.buttonImage}
                 />
                 <Text style={styles.serviceButtonText}>Alignment</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.serviceButton}>
                 <Image
-                  source={{ uri: 'https://example.com/ac-repair-icon.png' }}
+                  source={require('../../assets/list.png')}
                   style={styles.buttonImage}
                 />
                 <Text style={styles.serviceButtonText}>Inspection Services</Text>

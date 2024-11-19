@@ -158,7 +158,8 @@ export const styles = StyleSheet.create({
       paddingBottom: 40,
       paddingTop: 40,
       paddingLeft: 20,
-      paddingRight: 20,  
+      paddingRight: 20,
+      fontWeight: 'bold',  
     },
     gridContainer: {
       marginTop: 20,
@@ -172,7 +173,7 @@ export const styles = StyleSheet.create({
     serviceButton: {
       backgroundColor: '#f0f0f0',
       width: '48%', // Each button takes 48% of the container width
-      height: 150,
+      height: 200,
       justifyContent: 'center',
       alignItems: 'center',
       borderRadius: 8,
@@ -183,13 +184,13 @@ export const styles = StyleSheet.create({
       elevation: 3, // Required for Android to enable shadows
     },
     serviceButtonText: {
-      fontSize: 16,
+      fontSize: 18,
       fontWeight: '600',
       textAlign: 'center',
     },
     buttonImage: {
-      width: 40,
-      height: 40,
+      width: 70,
+      height: 70,
       marginBottom: 5,
     },
   });
