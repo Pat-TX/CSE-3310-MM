@@ -51,7 +51,7 @@ export const styles = StyleSheet.create({
         color: '#111' 
     },
     appointmentCard: { 
-        backgroundColor: '#f9f9f9', 
+        backgroundColor: '#efe6e1', 
         padding: 16, 
         marginBottom: 16, 
         borderRadius: 8 },
