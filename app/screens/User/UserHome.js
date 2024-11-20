@@ -338,11 +338,126 @@ function Search() {
 // * specific conversation. SATISFIES: Communication, Reporting, Payment                                  *
 // ********************************************************************************************************
 function Messages() {
-  const navigation = useNavigation();
+  const [selectedConversation, setSelectedConversation] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const exampleConversations = [
+    {
+      id: "1",
+      name: "Chris Irimia",
+      lastMessage: "No worries, once I get there, I'll get it taken care of!",
+      messages: [
+        { id: "m1", text: "Hey there!", sender: "You" },
+        { id: "m2", text: "It's about time for my car to get an oil change. Are you available?", sender: "You" },
+        { id: "m3", text: "Yeah -- take a look at my schedule, pick any appointment slot! We can talk prices when I learn a bit more about the car. :)", sender: "Chris" },
+        { id: "m4", text: "Thanks so much. Do you travel?", sender: "You" },
+        { id: "m5", text: "I can perform services at my shop or at your residence, whichever you prefer.", sender: "Chris" },
+        { id: "m6", text: "At my house would be great. With work and the kids, I didn't know when I was going to have time.", sender: "You" },
+        { id: "m7", text: "No worries, once I get there, I'll get it taken care of!", sender: "Chris" },
+      ],
+    },
+    {
+      id: "2",
+      name: "James Anderson",
+      lastMessage: "Thank you 🙏🙏",
+      messages: [
+        { id: "m1", text: "Not gonna lie, my inspection has been due for like 2 months", sender: "You" },
+        { id: "m2", text: "Say no more", sender: "James" },
+        { id: "m3", text: "Schedule an appointment, I gotchu ASAP", sender: "James" },
+        { id: "m4", text: "Thank you 🙏🙏", sender: "You" },
+      ],
+    },
+    {
+      id: "3",
+      name: "Ella Brooks",
+      lastMessage: "...I can check it out",
+      messages: [
+        { id: "m1", text: "So when I get my car up to cruising speed, it's kinda wobbly", sender: "You" },
+        { id: "m2", text: "What's cruising speed to you?", sender: "Ella" },
+        { id: "m3", text: "It's nothing excessive! I just get on I20 and set my cruise control to 115", sender: "You" },
+        { id: "m4", text: "...I can check it out", sender: "Ella" },
+      ],
+    },
+  ];
+
+  const openConversation = (conversation) => {
+    setSelectedConversation(conversation);
+    setModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
+    setSelectedConversation(null);
+  };
+
+  const renderConversation = ({ item }) => (
+    <TouchableOpacity
+      style={styles.conversationItem}
+      onPress={() => openConversation(item)}
+    >
+      <Text style={styles.conversationName}>{item.name}</Text>
+      <Text style={styles.conversationLastMessage}>{item.lastMessage}</Text>
+    </TouchableOpacity>
+  );
 
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Messages Screen!</Text>
+    <View style={styles.convoContainer}>
+      <Text style={styles.messagesTitle}>Your Inbox</Text>
+      <FlatList
+        data={exampleConversations}
+        keyExtractor={(item) => item.id}
+        renderItem={renderConversation}
+        contentContainerStyle={styles.conversationList}
+      />
+
+      <Modal visible={modalVisible} animationType="slide">
+        <View style={styles.modalConvoContainer}>
+          <Text style={styles.modalConvoTitle}>
+            {selectedConversation?.name || "Conversation"}
+          </Text>
+          <FlatList
+            data={selectedConversation?.messages || []}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <View
+                style={[
+                  styles.messageBubble,
+                  item.sender === "You"
+                    ? styles.messageBubbleYou
+                    : styles.messageBubbleOther,
+                ]}
+              >
+                <Text
+                  style={[
+                    styles.messageText,
+                    item.sender === "You"
+                      ? styles.messageTextYou
+                      : styles.messageTextOther,
+                  ]}
+                >
+                  {item.text}
+                </Text>
+              </View>
+            )}
+          />
+          <View style={styles.messageInputContainer}>
+            <TextInput
+              style={styles.messageInput}
+              placeholder="Type a message..."
+              placeholderTextColor="#888"
+            />
+            <TouchableOpacity style={styles.sendButton}>
+            <Image
+                source={require("../../assets/paper-plane.png")}
+                style={styles.sendButtonImg}
+              />
+            </TouchableOpacity>
+          </View>
+          <TouchableOpacity style={styles.closeConvoButton} onPress={closeModal}>
+            <Text style={styles.closeConvoButtonText}>Close</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </View>
   );
 }
