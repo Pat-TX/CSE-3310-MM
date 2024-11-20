@@ -95,7 +95,12 @@ function MechRegister({navigation}) {
 
   return (
     <SafeAreaView style={styles.container}>
-
+      <TouchableOpacity
+        style={styles.goBackButton}
+        onPress={() => navigation.goBack()}
+      >
+        <Text style={styles.goBackText}>Go Back</Text>
+      </TouchableOpacity>
       <Image
         style={styles.logo}
         source={require('../../assets/MobileMech.png')}

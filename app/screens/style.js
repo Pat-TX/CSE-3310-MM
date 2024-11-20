@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet, Dimensions, Platform, StatusBar } from "react-native";
 
 const {height, width} = Dimensions.get('window');
 
@@ -338,5 +338,17 @@ export const styles = StyleSheet.create({
     sendButtonImg: {
       width: 30,
       height: 30,
+    },
+    goBackButton: {
+        position: 'absolute',
+        top: Platform.OS === 'android' ? StatusBar.currentHeight + 10 : 10,
+        left: 10,
+        padding: 10,
+        borderRadius: 5,
+        backgroundColor: '#ddd',
+    },
+    goBackText: {
+        color: '#333',
+        fontSize: 16,
     },
   });
