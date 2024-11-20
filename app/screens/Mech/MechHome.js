@@ -136,7 +136,7 @@ function Profile() {
       try {
         const currentUser = auth.currentUser;
         if (currentUser) {
-          const userDocRef = doc(db, "customers", currentUser.uid);
+          const userDocRef = doc(db, "mechanics", currentUser.uid);
           const userDoc = await getDoc(userDocRef);
 
           if (userDoc.exists()) {
@@ -190,7 +190,7 @@ function Profile() {
                 {userData?.firstName || "N/A"} {userData?.lastName || "N/A"}
               </Text>
               <Text style={styles.userLocation}>
-                {userData?.area || "N/A"}
+                {userData?.serviceArea || "N/A"}
               </Text>
               <View style={styles.starContainer}>
               {Array.from({ length: 5 }).map((_, index) => (
