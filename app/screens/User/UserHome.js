@@ -27,6 +27,7 @@ import {
 } from "firebase/firestore";
 import { FIREBASE_DB } from "../../../FirebaseConfig";
 
+
 const Tab = createBottomTabNavigator();
 
 // ********************************************************************************************************
@@ -107,29 +108,31 @@ function Search() {
   const [modalVisible, setModalVisible] = useState(false);
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [selectMechanic, setselectMechanic] = useState(null);
+  const [options, setoptions] = useState(false);
 
   const handleSearch = async (param) => {
     if (!param.trim()) {
       alert("Please enter a service to search!");
       return;
     }
-  
+
     setLoading(true);
     setModalVisible(true);
-  
+
     try {
       const mechanicsRef = collection(FIREBASE_DB, "mechanics");
       const mechanicsQuery = query(
         mechanicsRef,
         where("servicesOffered", "array-contains", param)
       );
-  
+
       const querySnapshot = await getDocs(mechanicsQuery);
       const mechanics = querySnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
-  
+
       setResults(mechanics);
     } catch (error) {
       console.error("Error fetching mechanics: ", error);
@@ -137,6 +140,11 @@ function Search() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const selectOptions = (mechanic) => {
+    setselectMechanic(mechanic);
+    setoptions(true);
   };
 
   const navigation = useNavigation();
@@ -250,14 +258,18 @@ function Search() {
               ) : results.length > 0 ? (
                 <ScrollView>
                   {results.map((mechanic) => (
-                    <View key={mechanic.id} style={styles.mechanicCard}>
+                    <TouchableOpacity
+                      key={mechanic.id}
+                      style={styles.mechanicCard}
+                      onPress={() => selectOptions(mechanic)}
+                    >
                       <Text style={styles.mechanicName}>
                         {mechanic.firstName} {mechanic.lastName}
                       </Text>
                       <Text style={styles.mechanicLocation}>
                         {mechanic.serviceArea}
                       </Text>
-                    </View>
+                    </TouchableOpacity>
                   ))}
                 </ScrollView>
               ) : (
@@ -266,6 +278,44 @@ function Search() {
             </View>
           </Modal>
 
+          <Modal
+            visible={options}
+            animationType="slide"
+            onRequestClose={() => setoptions(false)}
+          >
+            <View style={styles.modalContainer}>
+              <Text style={styles.modalTitle}>Choose an option</Text>
+
+              {selectMechanic && (
+                <>
+                  <TouchableOpacity
+                    style={styles.buttonStyle}
+                    onPress={() => {
+                      setoptions(false);
+                      alert(`Contacting ${selectMechanic.firstName} ${selectMechanic.lastName}`);
+                    }}
+                  >
+                    <Text style={styles.buttonText}>Contact this Mechanic</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.buttonStyle}
+                    onPress={() => {
+                      setoptions(false);
+                      alert(`Creating appointment with ${selectMechanic.firstName} ${selectMechanic.lastName}`);
+                    }}
+                  >
+                    <Text style={styles.buttonText}>Create Appointment</Text>
+                  </TouchableOpacity>
+                </>
+              )}
+              <TouchableOpacity
+                style={styles.buttonStyle}
+                onPress={() => setoptions(false)}
+              >
+                <Text style={styles.buttonText}>Close</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
         </ScrollView>
       </SafeAreaView>
     </View>
