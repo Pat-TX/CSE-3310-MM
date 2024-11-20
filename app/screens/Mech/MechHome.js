@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   SafeAreaView,
   View,
@@ -14,6 +14,9 @@ import { styles } from "../style";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {useNavigation,} from "@react-navigation/native";
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { getAuth } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
+import { FIREBASE_DB } from "../../../FirebaseConfig";
 
 const Tab = createBottomTabNavigator();
 
@@ -122,13 +125,49 @@ function Messages() {
 // * SATISFIES: Mechanic Profile                                                                          *
 // ********************************************************************************************************
 function Profile() {
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const auth = getAuth();
+  const db = FIREBASE_DB;
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const currentUser = auth.currentUser;
+        if (currentUser) {
+          const userDocRef = doc(db, "customers", currentUser.uid);
+          const userDoc = await getDoc(userDocRef);
+
+          if (userDoc.exists()) {
+            setUserData(userDoc.data());
+          } else {
+            console.error("No such document!");
+          }
+        } else {
+          console.error("No authenticated user found");
+        }
+      } catch (error) {
+        console.error("Error fetching user data: ", error);
+      } finally {
+        setLoading(false); // Stop loading once the fetch is done
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+  // Display loading indicator while fetching data
+  if (loading) {
+    return <Text>Loading profile...</Text>;
+  }
+
   const navigation = useNavigation();
 
   return (
     <View style={{ flex: 1 }}>
       <SafeAreaView style={{ flex: 1, backgroundColor: 'fff' }}>
         <ScrollView
-          contentContainerStyle={{ alignItems: "center"}} // Allow centering the text below the image
+          contentContainerStyle={{ alignItems: "center"}}
           showsVerticalScrollIndicator={false}
         >
           <View style={styles.userProfileContainer}>
@@ -146,8 +185,12 @@ function Profile() {
               />
             </TouchableOpacity>
             <View style={styles.userTextContainer}>
-              <Text style={styles.userName}>Default Name</Text>
-              <Text style={styles.userLocation}>Default Location</Text>
+              <Text style={styles.userName}>
+                {userData?.firstName || "N/A"} {userData?.lastName || "N/A"}
+              </Text>
+              <Text style={styles.userLocation}>
+                {userData?.area || "N/A"}
+              </Text>
               <View style={styles.starContainer}>
               {Array.from({ length: 5 }).map((_, index) => (
                 <Icon
