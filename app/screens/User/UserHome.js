@@ -26,7 +26,7 @@ import {
   getDocs,
 } from "firebase/firestore";
 import { FIREBASE_DB } from "../../../FirebaseConfig";
-
+//import BookAppointment from "./BookAppointment";
 
 const Tab = createBottomTabNavigator();
 
@@ -297,15 +297,19 @@ function Search() {
                   >
                     <Text style={styles.buttonText}>Contact this Mechanic</Text>
                   </TouchableOpacity>
+
+
                   <TouchableOpacity
-                    style={styles.buttonStyle}
-                    onPress={() => {
-                      setoptions(false);
-                      alert(`Creating appointment with ${selectMechanic.firstName} ${selectMechanic.lastName}`);
-                    }}
-                  >
-                    <Text style={styles.buttonText}>Create Appointment</Text>
-                  </TouchableOpacity>
+                  style={styles.buttonStyle}
+                  onPress={() => {
+                  setModalVisible(false); 
+                  setoptions(false); 
+                  navigation.navigate('BookAppointment'); // Navigate to appointment screen
+  }}
+>
+  <Text style={styles.buttonText}>Create Appointment</Text>
+</TouchableOpacity>
+
                 </>
               )}
               <TouchableOpacity

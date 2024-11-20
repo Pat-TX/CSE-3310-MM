@@ -10,6 +10,7 @@ import MechLogin from "./app/screens/Mech/MechLogin";
 import MechRegister from "./app/screens/Mech/MechRegister";
 import UserHome from "./app/screens/User/UserHome";
 import MechHome from "./app/screens/Mech/MechHome";
+import BookAppointment from "./app/screens/User/BookAppointment";
 
 const Stack = createNativeStackNavigator();
 
@@ -28,6 +29,7 @@ export default function App() {
         <Stack.Screen name="MechRegister" component={MechRegister} options={{ headerShown: true }} />
         <Stack.Screen name="MechHome" component={MechHome} options={{ headerShown: true }} />
         <Stack.Screen name="UserHome" component={UserHome} options={{ headerShown: true }} />
+        <Stack.Screen name="BookAppointment" component={BookAppointment} options={{ headerShown: true }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
