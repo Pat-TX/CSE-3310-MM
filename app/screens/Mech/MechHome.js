@@ -14,6 +14,7 @@ import { styles } from "../style";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {useNavigation,} from "@react-navigation/native";
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Appointments from "./Appointment"; 
 import { getAuth } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { FIREBASE_DB } from "../../../FirebaseConfig";
@@ -92,15 +93,15 @@ function MyTabs() {
 // * This screen should show the mechanic all of their confirmed appointments in a clear, comfortable way *
 // * so that they may stay on top of the work they need to do. SATISFIES: Appointments                    *
 // ********************************************************************************************************
-function Appointments() {
-  const navigation = useNavigation();
+// function Appointments() {
+//   const navigation = useNavigation();
 
-  return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Appointments Screen!</Text>
-    </View>
-  );
-}
+//   return (
+//     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+//       <Text>Appointments Screen!</Text>
+//     </View>
+//   );
+// }
 
 // ********************************************************************************************************
 // * This function provides functionality for the messaging feature.                                      *

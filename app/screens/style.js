@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
     },
     buttonStyle: {
       elevation: 8,
-      backgroundColor: "#435F8E",
+      backgroundColor: "#007aff",
       borderRadius: 15,
       paddingVertical: 10,
       width: Dimensions.get('window').width - 50,  
@@ -152,5 +152,80 @@ export const styles = StyleSheet.create({
     },
     star: {
       marginHorizontal: 3,
+    },
+    searchTitle: {
+      fontSize: 20,
+      paddingBottom: 40,
+      paddingTop: 40,
+      paddingLeft: 20,
+      paddingRight: 20,
+      fontWeight: 'bold',  
+    },
+    gridContainer: {
+      marginTop: 20,
+      width: '90%',
+    },
+    row: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginBottom: 15,
+    },
+    serviceButton: {
+      backgroundColor: '#f0f0f0',
+      width: '48%', // Each button takes 48% of the container width
+      height: 200,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderRadius: 8,
+      shadowColor: '#000', // Shadow color
+      shadowOffset: { width: 0, height: 2 }, // Offset for shadow
+      shadowOpacity: 0.3, // Opacity of the shadow
+      shadowRadius: 4, // Blur radius of the shadow
+      elevation: 3, // Required for Android to enable shadows
+    },
+    serviceButtonText: {
+      fontSize: 18,
+      fontWeight: '600',
+      textAlign: 'center',
+    },
+    buttonImage: {
+      width: 70,
+      height: 70,
+      marginBottom: 5,
+    },
+    modalContainer: {
+      flex: 1,
+      backgroundColor: "#fff",
+      padding: 20,
+    },
+    modalTitle: {
+      fontSize: 22,
+      fontWeight: "bold",
+      marginBottom: 20,
+    },
+    closeButton: {
+      backgroundColor: "#007BFF",
+      padding: 10,
+      borderRadius: 5,
+      alignSelf: "flex-end",
+    },
+    closeButtonText: {
+      color: "#fff",
+      fontWeight: "bold",
+    },
+    mechanicCard: {
+      backgroundColor: "#f9f9f9",
+      padding: 15,
+      marginVertical: 10,
+      borderRadius: 10,
+      elevation: 3,
+    },
+    mechanicName: {
+      fontSize: 18,
+      fontWeight: "bold",
+    },
+    mechanicLocation: {
+      fontSize: 16,
+      color: "#666",
     },
   });
