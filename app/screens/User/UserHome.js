@@ -307,7 +307,7 @@ function Search() {
                   navigation.navigate('BookAppointment'); // Navigate to appointment screen
   }}
 >
-  <Text style={styles.buttonText}>Create Appointment</Text>
+  <Text style={styles.buttonText}>Book an Appointment</Text>
 </TouchableOpacity>
 
                 </>

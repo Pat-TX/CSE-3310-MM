@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from "react";
 import {
   StyleSheet,
   Dimensions,
@@ -8,19 +8,50 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   FlatList,
-} from 'react-native';
-import { styles } from '../mechstyle';
+} from "react-native";
+import { styles } from "../mechstyle";
 
-const { width } = Dimensions.get('window');
+const { width } = Dimensions.get("window");
 
 export default function Appointments() {
   const [value, setValue] = useState(new Date());
   const [week, setWeek] = useState(0);
+  const [selectedTime, setSelectedTime] = useState(null); // State for selected time
+  const [randomTimeSlots, setRandomTimeSlots] = useState({});
   const flatListRef = useRef(null);
+
+  const generateRandomTimeSlots = () => {
+    const days = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ];
+    const slots = {};
+
+    days.forEach((day) => {
+      const numSlots = Math.floor(Math.random() * 4) + 1; // Generate between 1-4 slots
+      const startHour = 8 + Math.floor(Math.random() * 6); // Random start hour between 8 AM - 2 PM
+      slots[day] = Array.from({ length: numSlots }).map((_, i) => {
+        const hour = (startHour + i) % 12 || 12;
+        const ampm = startHour + i >= 12 ? "PM" : "AM";
+        return `${hour}:00 ${ampm}`;
+      });
+    });
+
+    return slots;
+  };
+
+  useEffect(() => {
+    setRandomTimeSlots(generateRandomTimeSlots());
+  }, []);
 
   const getStartOfWeek = (date) => {
     const day = date.getDay();
-    const diff = date.getDate() - day + (day === 0 ? -6 : 1); 
+    const diff = date.getDate() - day + (day === 0 ? -6 : 1);
     return new Date(date.setDate(diff));
   };
 
@@ -32,10 +63,10 @@ export default function Appointments() {
 
   const formatDate = (date, format) => {
     const options =
-      format === 'weekday'
-        ? { weekday: 'short' }
-        : { day: 'numeric' };
-    return new Intl.DateTimeFormat('en-US', options).format(date);
+      format === "weekday"
+        ? { weekday: "short" }
+        : { day: "numeric" };
+    return new Intl.DateTimeFormat("en-US", options).format(date);
   };
 
   const weeks = React.useMemo(() => {
@@ -48,7 +79,7 @@ export default function Appointments() {
         const date = addDays(startOfCurrentWeek, adj * 7 + index);
 
         return {
-          weekday: formatDate(date, 'weekday'),
+          weekday: formatDate(date, "weekday"),
           date,
         };
       });
@@ -63,17 +94,27 @@ export default function Appointments() {
     setWeek(newWeek);
     setValue(addDays(value, (newIndex - 1) * 7));
 
-    // Reset to middle index (1) after updating the week
     setTimeout(() => {
       flatListRef.current.scrollToIndex({ index: 1, animated: false });
     }, 100);
+  };
+
+  const availableSlots = randomTimeSlots[value.toLocaleDateString("en-US", { weekday: "long" })] || [];
+
+  const handleBookAppointment = () => {
+    if (!selectedTime) {
+      alert("Please select a time slot.");
+      return;
+    }
+    alert(`Appointment booked for ${value.toDateString()} at ${selectedTime}`);
+    setSelectedTime(null);
   };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
         <View style={styles.header}>
-          <Text style={styles.title}>Your Schedule</Text>
+          <Text style={styles.title}>Availability</Text>
         </View>
 
         <View style={styles.picker}>
@@ -105,15 +146,15 @@ export default function Appointments() {
                         style={[
                           styles.item,
                           isActive && {
-                            backgroundColor: '#111',
-                            borderColor: '#111',
+                            backgroundColor: "#111",
+                            borderColor: "#111",
                           },
                         ]}
                       >
                         <Text
                           style={[
                             styles.itemWeekday,
-                            isActive && { color: '#fff' },
+                            isActive && { color: "#fff" },
                           ]}
                         >
                           {item.weekday}
@@ -121,7 +162,7 @@ export default function Appointments() {
                         <Text
                           style={[
                             styles.itemDate,
-                            isActive && { color: '#fff' },
+                            isActive && { color: "#fff" },
                           ]}
                         >
                           {item.date.getDate()}
@@ -137,21 +178,39 @@ export default function Appointments() {
 
         <View style={{ flex: 1, paddingHorizontal: 16, paddingVertical: 24 }}>
           <Text style={styles.subtitle}>{value.toDateString()}</Text>
-          <View style={styles.placeholder}>
-            <View style={styles.placeholderInset}>
-              {/* Replace with your content */}
-            </View>
+          <View>
+            {availableSlots.length > 0 ? (
+              availableSlots.map((slot, index) => (
+                <TouchableOpacity
+                  key={index}
+                  onPress={() => setSelectedTime(slot)}
+                  style={[
+                    styles.slotCard,
+                    selectedTime === slot && { backgroundColor: "#111" },
+                  ]}
+                >
+                  <Text
+                    style={[
+                      styles.slotText,
+                      selectedTime === slot && { color: "#fff" },
+                    ]}
+                  >
+                    {slot}
+                  </Text>
+                </TouchableOpacity>
+              ))
+            ) : (
+              <Text style={{ textAlign: "center", color: "#999" }}>
+                No available time slots.
+              </Text>
+            )}
           </View>
         </View>
 
         <View style={styles.footer}>
-          <TouchableOpacity
-            onPress={() => {
-              // handle onPress
-            }}
-          >
+          <TouchableOpacity onPress={handleBookAppointment}>
             <View style={styles.btn}>
-              <Text style={styles.btnText}>Schedule</Text>
+              <Text style={styles.btnText}>Book Appointment</Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -159,104 +218,3 @@ export default function Appointments() {
     </SafeAreaView>
   );
 }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     paddingVertical: 24,
-//   },
-//   header: {
-//     paddingHorizontal: 16,
-//   },
-//   title: {
-//     fontSize: 32,
-//     fontWeight: '700',
-//     color: '#1d1d1d',
-//     marginBottom: 12,
-//   },
-//   picker: {
-//     flex: 1,
-//     maxHeight: 74,
-//     paddingVertical: 12,
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//   },
-//   subtitle: {
-//     fontSize: 17,
-//     fontWeight: '600',
-//     color: '#999999',
-//     marginBottom: 12,
-//   },
-//   footer: {
-//     marginTop: 'auto',
-//     paddingHorizontal: 16,
-//   },
-//   /** Item */
-//   item: {
-//     flex: 1,
-//     height: 50,
-//     marginHorizontal: 4,
-//     paddingVertical: 6,
-//     paddingHorizontal: 4,
-//     borderWidth: 1,
-//     borderRadius: 8,
-//     borderColor: '#e3e3e3',
-//     flexDirection: 'column',
-//     alignItems: 'center',
-//   },
-//   itemRow: {
-//     width: width,
-//     flexDirection: 'row',
-//     alignItems: 'flex-start',
-//     justifyContent: 'space-between',
-//     paddingHorizontal: 12,
-//   },
-//   itemWeekday: {
-//     fontSize: 13,
-//     fontWeight: '500',
-//     color: '#737373',
-//     marginBottom: 4,
-//   },
-//   itemDate: {
-//     fontSize: 15,
-//     fontWeight: '600',
-//     color: '#111',
-//   },
-//   /** Placeholder */
-//   placeholder: {
-//     flexGrow: 1,
-//     flexShrink: 1,
-//     flexBasis: 0,
-//     height: 400,
-//     marginTop: 0,
-//     padding: 0,
-//     backgroundColor: 'transparent',
-//   },
-//   placeholderInset: {
-//     borderWidth: 4,
-//     borderColor: '#e5e7eb',
-//     borderStyle: 'dashed',
-//     borderRadius: 9,
-//     flexGrow: 1,
-//     flexShrink: 1,
-//     flexBasis: 0,
-//   },
-//   /** Button */
-//   btn: {
-//     flexDirection: 'row',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//     borderRadius: 8,
-//     paddingVertical: 10,
-//     paddingHorizontal: 20,
-//     borderWidth: 1,
-//     backgroundColor: '#007aff',
-//     borderColor: '#007aff',
-//   },
-//   btnText: {
-//     fontSize: 18,
-//     lineHeight: 26,
-//     fontWeight: '600',
-//     color: '#fff',
-//   },
-// });

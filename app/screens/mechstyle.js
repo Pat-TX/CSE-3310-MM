@@ -136,4 +136,21 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     color: "#999",
   },
+  slotCard: {
+    marginVertical: 8,
+    padding: 16,
+    backgroundColor: "#f9f9f9",
+    borderRadius: 10,
+    elevation: 3,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+    alignItems: "center",
+  },
+  slotText: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#333",
+  },
 });
