@@ -8,7 +8,7 @@ function Welcome({navigation}) {
 
           <Image 
             style={styles.logo}
-            source={require('../assets/icon.png')}
+            source={require('../assets/MobileMech.png')}
           />
 
           <Text style={styles.header1}>Welcome in!</Text>

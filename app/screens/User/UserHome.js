@@ -34,6 +34,11 @@ const Tab = createBottomTabNavigator();
 // * This function provides functionality for the tab navigation.                                         *
 // ********************************************************************************************************
 function MyTabs() {
+  const [messages, setMessages] = useState([]);
+
+  const addMessage = (newMessage) => {
+    setMessages((prevMessages) => [...prevMessages, newMessage]);
+  };
   return (
     <Tab.Navigator
       tabBarPosition="bottom"
