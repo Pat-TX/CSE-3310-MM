@@ -9,6 +9,8 @@ import {
   TouchableWithoutFeedback,
   FlatList,
 } from "react-native";
+import { FIREBASE_AUTH, FIREBASE_DB } from "../../../FirebaseConfig";
+import { doc, getDoc, addDoc, collection } from "firebase/firestore";
 import { styles } from "../mechstyle";
 
 const { width } = Dimensions.get("window");
@@ -16,8 +18,9 @@ const { width } = Dimensions.get("window");
 export default function Appointments() {
   const [value, setValue] = useState(new Date());
   const [week, setWeek] = useState(0);
-  const [selectedTime, setSelectedTime] = useState(null); // State for selected time
+  const [selectedTime, setSelectedTime] = useState(null);
   const [randomTimeSlots, setRandomTimeSlots] = useState({});
+  const [userInfo, setUserInfo] = useState({ name: "", email: "" });
   const flatListRef = useRef(null);
 
   const generateRandomTimeSlots = () => {
@@ -47,7 +50,62 @@ export default function Appointments() {
 
   useEffect(() => {
     setRandomTimeSlots(generateRandomTimeSlots());
+    fetchUserInfo();
   }, []);
+
+  const fetchUserInfo = async () => {
+    const user = FIREBASE_AUTH.currentUser;
+    if (!user) {
+      console.error("User not logged in");
+      return;
+    }
+    try {
+      const userDoc = doc(FIREBASE_DB, "users", user.uid);
+      const docSnap = await getDoc(userDoc);
+
+      if (docSnap.exists()) {
+        const { name, email } = docSnap.data();
+        setUserInfo({ name, email });
+      } else {
+        console.error("User document does not exist");
+      }
+    } catch (error) {
+      console.error("Error fetching user info:", error);
+    }
+  };
+
+  const handleBookAppointment = async () => {
+    if (!selectedTime) {
+      alert("Please select a time slot.");
+      return;
+    }
+
+    const user = FIREBASE_AUTH.currentUser;
+    if (!user) {
+      alert("You must be logged in to book an appointment.");
+      return;
+    }
+
+    try {
+      const appointmentsCollection = collection(FIREBASE_DB, "appointments");
+      const appointment = {
+        name: userInfo.name,
+        email: userInfo.email,
+        date: value.toDateString(),
+        time: selectedTime,
+        status: "Pending",
+      };
+
+      await addDoc(appointmentsCollection, appointment);
+
+      alert(
+        `Appointment booked for ${value.toDateString()} at ${selectedTime}`
+      );
+      setSelectedTime(null);
+    } catch (error) {
+      console.error("Error booking appointment:", error);
+    }
+  };
 
   const getStartOfWeek = (date) => {
     const day = date.getDay();
@@ -101,20 +159,11 @@ export default function Appointments() {
 
   const availableSlots = randomTimeSlots[value.toLocaleDateString("en-US", { weekday: "long" })] || [];
 
-  const handleBookAppointment = () => {
-    if (!selectedTime) {
-      alert("Please select a time slot.");
-      return;
-    }
-    alert(`Appointment booked for ${value.toDateString()} at ${selectedTime}`);
-    setSelectedTime(null);
-  };
-
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
         <View style={styles.header}>
-          <Text style={styles.title}>Availability</Text>
+          <Text style={styles.title}>Book an Appointment</Text>
         </View>
 
         <View style={styles.picker}>

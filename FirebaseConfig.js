@@ -23,3 +23,4 @@ export const FIREBASE_DB = getFirestore(FIREBASE_APP);
 
 export const mechsCollection = collection(FIREBASE_DB, 'mechanics');
 export const customersCollection = collection(FIREBASE_DB, 'customers');
+export const appointmentsCollection = collection(FIREBASE_DB, 'appointments');
