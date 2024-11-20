@@ -275,7 +275,7 @@ export const styles = StyleSheet.create({
       alignSelf: "flex-start",
     },
     messageText: {
-      fontSize: 14,
+      fontSize: 18,
     },
     messageTextYou: {
       color: "#007aff",
@@ -318,11 +318,11 @@ export const styles = StyleSheet.create({
     },
     messageInput: {
       flex: 1,
-      height: 40,
+      height: 50,
       backgroundColor: "#fff",
       borderRadius: 20,
       paddingHorizontal: 15,
-      fontSize: 14,
+      fontSize: 18,
       borderWidth: 1,
       borderColor: "#ccc",
       shadowColor: "#000",
