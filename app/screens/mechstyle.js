@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingVertical: 24,
-    paddingTop: 60,
+    paddingTop: 67,
   },
   header: {
     paddingHorizontal: 16,
@@ -88,17 +88,15 @@ export const styles = StyleSheet.create({
 
   // Button styles
   btn: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 8,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderWidth: 1,
+    elevation: 8,
     backgroundColor: "#007aff",
-    borderColor: "#007aff",
+    borderRadius: 15,
+    paddingVertical: 10,
+    width: Dimensions.get('window').width -20,  
+    margin: 10,
   },
   btnText: {
+    textAlign: "center",
     fontSize: 18,
     lineHeight: 26,
     fontWeight: "600",

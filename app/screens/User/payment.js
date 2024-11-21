@@ -8,7 +8,7 @@ function Payment({ navigation }) {
   const selectPaymentMethod = (method) => {
     setPaymentMethod(method);
     alert(`Payment method selected: ${method}`);
-    // You can add navigation or other logic here if needed
+    
   };
 
   return (
