@@ -7,6 +7,7 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingVertical: 24,
+    paddingTop: 60,
   },
   header: {
     paddingHorizontal: 16,
@@ -153,4 +154,16 @@ export const styles = StyleSheet.create({
     fontWeight: "600",
     color: "#333",
   },
+     goBackButton: {
+        position: 'absolute',
+        top: 25,
+        left: 25,
+        padding: 10,
+        borderRadius: 15,
+        backgroundColor: '#ddd',
+    },
+    goBackText: {
+        color: '#333',
+        fontSize: 16,
+    },
 });

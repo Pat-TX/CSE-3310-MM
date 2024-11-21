@@ -9,6 +9,7 @@ import {
   TouchableWithoutFeedback,
   FlatList,
 } from "react-native";
+import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook
 import { FIREBASE_AUTH, FIREBASE_DB } from "../../../FirebaseConfig";
 import { doc, getDoc, addDoc, collection } from "firebase/firestore";
 import { styles } from "../mechstyle";
@@ -16,6 +17,7 @@ import { styles } from "../mechstyle";
 const { width } = Dimensions.get("window");
 
 export default function Appointments() {
+  const navigation = useNavigation(); // Initialize navigation
   const [value, setValue] = useState(new Date());
   const [week, setWeek] = useState(0);
   const [selectedTime, setSelectedTime] = useState(null);
@@ -101,6 +103,7 @@ export default function Appointments() {
       alert(
         `Appointment booked for ${value.toDateString()} at ${selectedTime}`
       );
+      
       setSelectedTime(null);
     } catch (error) {
       console.error("Error booking appointment:", error);
@@ -160,110 +163,112 @@ export default function Appointments() {
   const availableSlots = randomTimeSlots[value.toLocaleDateString("en-US", { weekday: "long" })] || [];
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.title}>Book an Appointment</Text>
-        </View>
+    <SafeAreaView style={styles.container}>
+      <TouchableOpacity
+        style={styles.goBackButton}
+        onPress={() => navigation.goBack()}
+      >
+        <Text style={styles.goBackText}>Go Back</Text>
+      </TouchableOpacity>
 
-        <View style={styles.picker}>
-          <FlatList
-            ref={flatListRef}
-            data={weeks}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            pagingEnabled
-            initialScrollIndex={1}
-            onScrollEndDrag={handleScrollEnd}
-            keyExtractor={(item, index) => index.toString()}
-            getItemLayout={(_, index) => ({
-              length: width,
-              offset: width * index,
-              index,
-            })}
-            renderItem={({ item: dates }) => (
-              <View style={styles.itemRow}>
-                {dates.map((item, dateIndex) => {
-                  const isActive =
-                    value.toDateString() === item.date.toDateString();
-                  return (
-                    <TouchableWithoutFeedback
-                      key={dateIndex}
-                      onPress={() => setValue(item.date)}
+      <View style={styles.picker}>
+        <FlatList
+          ref={flatListRef}
+          data={weeks}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          pagingEnabled
+          initialScrollIndex={1}
+          onScrollEndDrag={handleScrollEnd}
+          keyExtractor={(item, index) => index.toString()}
+          getItemLayout={(_, index) => ({
+            length: width,
+            offset: width * index,
+            index,
+          })}
+          renderItem={({ item: dates }) => (
+            <View style={styles.itemRow}>
+              {dates.map((item, dateIndex) => {
+                const isActive =
+                  value.toDateString() === item.date.toDateString();
+                return (
+                  <TouchableWithoutFeedback
+                    key={dateIndex}
+                    onPress={() => setValue(item.date)}
+                  >
+                    <View
+                      style={[
+                        styles.item,
+                        isActive && {
+                          backgroundColor: "#111",
+                          borderColor: "#111",
+                        },
+                      ]}
                     >
-                      <View
+                      <Text
                         style={[
-                          styles.item,
-                          isActive && {
-                            backgroundColor: "#111",
-                            borderColor: "#111",
-                          },
+                          styles.itemWeekday,
+                          isActive && { color: "#fff" },
                         ]}
                       >
-                        <Text
-                          style={[
-                            styles.itemWeekday,
-                            isActive && { color: "#fff" },
-                          ]}
-                        >
-                          {item.weekday}
-                        </Text>
-                        <Text
-                          style={[
-                            styles.itemDate,
-                            isActive && { color: "#fff" },
-                          ]}
-                        >
-                          {item.date.getDate()}
-                        </Text>
-                      </View>
-                    </TouchableWithoutFeedback>
-                  );
-                })}
-              </View>
-            )}
-          />
-        </View>
+                        {item.weekday}
+                      </Text>
+                      <Text
+                        style={[
+                          styles.itemDate,
+                          isActive && { color: "#fff" },
+                        ]}
+                      >
+                        {item.date.getDate()}
+                      </Text>
+                    </View>
+                  </TouchableWithoutFeedback>
+                );
+              })}
+            </View>
+          )}
+        />
+      </View>
 
-        <View style={{ flex: 1, paddingHorizontal: 16, paddingVertical: 24 }}>
-          <Text style={styles.subtitle}>{value.toDateString()}</Text>
-          <View>
-            {availableSlots.length > 0 ? (
-              availableSlots.map((slot, index) => (
-                <TouchableOpacity
-                  key={index}
-                  onPress={() => setSelectedTime(slot)}
+      <View style={{ flex: 1, paddingHorizontal: 16, paddingVertical: 24 }}>
+        <Text style={styles.subtitle}>{value.toDateString()}</Text>
+        <View>
+          {availableSlots.length > 0 ? (
+            availableSlots.map((slot, index) => (
+              <TouchableOpacity
+                key={index}
+                onPress={() => setSelectedTime(slot)}
+                style={[
+                  styles.slotCard,
+                  selectedTime === slot && { backgroundColor: "#111" },
+                ]}
+              >
+                <Text
                   style={[
-                    styles.slotCard,
-                    selectedTime === slot && { backgroundColor: "#111" },
+                    styles.slotText,
+                    selectedTime === slot && { color: "#fff" },
                   ]}
                 >
-                  <Text
-                    style={[
-                      styles.slotText,
-                      selectedTime === slot && { color: "#fff" },
-                    ]}
-                  >
-                    {slot}
-                  </Text>
-                </TouchableOpacity>
-              ))
-            ) : (
-              <Text style={{ textAlign: "center", color: "#999" }}>
-                No available time slots.
-              </Text>
-            )}
-          </View>
+                  {slot}
+                </Text>
+              </TouchableOpacity>
+            ))
+          ) : (
+            <Text style={{ textAlign: "center", color: "#999" }}>
+              No available time slots.
+            </Text>
+          )}
         </View>
+      </View>
 
-        <View style={styles.footer}>
-          <TouchableOpacity onPress={handleBookAppointment}>
-            <View style={styles.btn}>
-              <Text style={styles.btnText}>Book Appointment</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
+      <View style={styles.footer}>
+        <TouchableOpacity onPress={handleBookAppointment}>
+          <View style={styles.btn}>
+            <Text style={styles.btnText}>Book Appointment</Text>
+          </View>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
 }
+
