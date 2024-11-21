@@ -91,6 +91,11 @@ function UserLogin({ navigation }) {
           >
             <Text style={styles.buttonText}>Login</Text>
           </TouchableOpacity>
+          <TouchableOpacity
+            style={{ marginTop: 10 }}
+          >
+            <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
+          </TouchableOpacity>
         </>
       )}
     </SafeAreaView>

@@ -422,4 +422,9 @@ export const styles = StyleSheet.create({
     height: 150,
     margin: 100,
   },
+  forgotPasswordText: {
+    color: "#007BFF",
+    textAlign: "center",
+    fontSize: 14,
+  },
   });
