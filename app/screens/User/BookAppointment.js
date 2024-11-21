@@ -9,7 +9,7 @@ import {
   TouchableWithoutFeedback,
   FlatList,
 } from "react-native";
-import { useNavigation } from '@react-navigation/native'; // Import useNavigation hook
+import { useNavigation } from '@react-navigation/native'; 
 import { FIREBASE_AUTH, FIREBASE_DB } from "../../../FirebaseConfig";
 import { doc, getDoc, addDoc, collection } from "firebase/firestore";
 import { styles } from "../mechstyle";
@@ -17,7 +17,7 @@ import { styles } from "../mechstyle";
 const { width } = Dimensions.get("window");
 
 export default function Appointments() {
-  const navigation = useNavigation(); // Initialize navigation
+  const navigation = useNavigation(); 
   const [value, setValue] = useState(new Date());
   const [week, setWeek] = useState(0);
   const [selectedTime, setSelectedTime] = useState(null);
@@ -100,11 +100,14 @@ export default function Appointments() {
 
       await addDoc(appointmentsCollection, appointment);
 
-      alert(
-        `Appointment booked for ${value.toDateString()} at ${selectedTime}`
-      );
+      // alert(
+      //   `Appointment booked for ${value.toDateString()} at ${selectedTime}`
+      // );
       
       setSelectedTime(null);
+      
+      // Navigate to Payment screen
+      navigation.navigate('Payment');
     } catch (error) {
       console.error("Error booking appointment:", error);
     }
@@ -271,4 +274,3 @@ export default function Appointments() {
     </SafeAreaView>
   );
 }
-
