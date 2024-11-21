@@ -1,4 +1,5 @@
 import React from "react";
+import { StatusBar } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Welcome from "./app/screens/Welcome";
@@ -20,6 +21,7 @@ export default function App() {
 
   return (
     <NavigationContainer>
+      <StatusBar backgroundColor="#007aff" barStyle="light-content" />
       <Stack.Navigator initialRouteName="Welcome">
         <Stack.Screen name="Welcome" component={Welcome} options={{ headerShown: false }} />
         <Stack.Screen name="PreUserLogin" component={PreUserLogin} options={{ headerShown: false }} />
