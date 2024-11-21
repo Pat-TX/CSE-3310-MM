@@ -1,6 +1,7 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { StatusBar } from 'react-native';
 import Welcome from "./app/screens/Welcome";
 import PreUserLogin from "./app/screens/User/PreUserLogin";
 import PreMechLogin from "./app/screens/Mech/PreMechLogin";
@@ -18,7 +19,9 @@ export default function App() {
   console.log("App executed");
 
   return (
+    
     <NavigationContainer>
+      <StatusBar backgroundColor="#007aff" barStyle="light-content" />
       <Stack.Navigator initialRouteName="Welcome">
         <Stack.Screen name="Welcome" component={Welcome} options={{ headerShown: false }} />
         <Stack.Screen name="PreUserLogin" component={PreUserLogin} options={{ headerShown: false }} />
@@ -27,9 +30,9 @@ export default function App() {
         <Stack.Screen name="UserRegister" component={UserRegister} options={{ headerShown: false }} />
         <Stack.Screen name="MechLogin" component={MechLogin} options={{ headerShown: false }} />
         <Stack.Screen name="MechRegister" component={MechRegister} options={{ headerShown: false }} />
-        <Stack.Screen name="MechHome" component={MechHome} options={{ headerShown: true }} />
-        <Stack.Screen name="UserHome" component={UserHome} options={{ headerShown: true }} />
-        <Stack.Screen name="BookAppointment" component={BookAppointment} options={{ headerShown: true }} />
+        <Stack.Screen name="MechHome" component={MechHome} options={{ headerShown: false }} />
+        <Stack.Screen name="UserHome" component={UserHome} options={{ headerShown: false }} />
+        <Stack.Screen name="BookAppointment" component={BookAppointment} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

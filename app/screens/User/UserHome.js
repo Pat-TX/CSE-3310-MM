@@ -10,13 +10,14 @@ import {
   ScrollView,
   TextInput,
   Modal,
-  FlatList
+  FlatList,
+  Alert
 } from "react-native";
 import { Button } from "@react-navigation/elements";
 import { styles } from "../style";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { useNavigation } from "@react-navigation/native";
-import { getAuth } from "firebase/auth";
+import { getAuth, signOut } from "firebase/auth";
 import {
   doc,
   getDoc,
@@ -155,7 +156,7 @@ function Search() {
   const navigation = useNavigation();
 
   return (
-    <View>
+    <View style={styles.safeArea}>
       <SafeAreaView>
         <ScrollView
           contentContainerStyle={{ alignItems: "center" }} // Allow centering the text below the image
@@ -401,6 +402,7 @@ function Messages() {
   );
 
   return (
+    <SafeAreaView style={styles.safeArea}>
     <View style={styles.convoContainer}>
       <Text style={styles.messagesTitle}>Your Inbox</Text>
       <FlatList
@@ -459,6 +461,7 @@ function Messages() {
         </View>
       </Modal>
     </View>
+    </SafeAreaView>
   );
 }
 
@@ -500,6 +503,17 @@ function Profile() {
     fetchUserData();
   }, []);
 
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth);
+      Alert.alert("Signed out successfully");
+      navigation.navigate("Welcome");
+    } catch (error) {
+      console.error("Error signing out: ", error);
+      Alert.alert("Sign out failed", error.message);
+    }
+  };
+
   // Display loading indicator while fetching data
   if (loading) {
     return <Text>Loading profile...</Text>;
@@ -508,8 +522,8 @@ function Profile() {
   const navigation = useNavigation();
 
   return (
-    <View style={{ flex: 1 }}>
-      <SafeAreaView style={{ flex: 1, backgroundColor: "fff" }}>
+    <View style={{ flex: 1, paddingTop: 20 }}>
+      <SafeAreaView style={styles.safeArea}>
         <ScrollView
           contentContainerStyle={{ alignItems: "center" }} // Allow centering the text below the image
           showsVerticalScrollIndicator={false}
@@ -535,8 +549,18 @@ function Profile() {
               <Text style={styles.userLocation}>{userData?.area || "N/A"}</Text>
             </View>
           </View>
+          
         </ScrollView>
+        
       </SafeAreaView>
+      <View style={styles.bottomContainer}>
+            <TouchableOpacity
+              style={styles.signOutButton}
+              onPress={handleSignOut}
+            >
+              <Text style={styles.signOutButtonText}>Sign Out</Text>
+            </TouchableOpacity>
+          </View>
     </View>
   );
 }

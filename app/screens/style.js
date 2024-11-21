@@ -341,14 +341,39 @@ export const styles = StyleSheet.create({
     },
     goBackButton: {
         position: 'absolute',
-        top: Platform.OS === 'android' ? StatusBar.currentHeight + 10 : 10,
-        left: 10,
+        top: 25,
+        left: 25,
         padding: 10,
-        borderRadius: 5,
+        borderRadius: 15,
         backgroundColor: '#ddd',
     },
     goBackText: {
         color: '#333',
         fontSize: 16,
     },
+    safeArea: {
+      flex: 1,
+  },
+  bottomContainer: {
+    flex: 1, // Takes up all remaining space, pushing the button to the bottom
+    justifyContent: 'flex-end', // Aligns the button at the bottom
+    paddingBottom: 20, // Adds some spacing from the bottom of the screen
+    width: '100%',
+  },
+  signOutButton: {
+    backgroundColor: "#FF6347", 
+    paddingVertical: 10,
+    marginTop: 50,
+    elevation: 3,
+    borderRadius: 15,
+    width: Dimensions.get('window').width - 50,  
+    margin: 10,
+    alignSelf: 'center',
+  },
+  signOutButtonText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
+    alignSelf: 'center',
+  },
   });
