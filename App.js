@@ -21,17 +21,17 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Welcome">
-        <Stack.Screen name="Welcome" component={Welcome} options={{ headerShown: true }} />
-        <Stack.Screen name="PreUserLogin" component={PreUserLogin} options={{ headerShown: true }} />
-        <Stack.Screen name="PreMechLogin" component={PreMechLogin} options={{ headerShown: true }} />
-        <Stack.Screen name="UserLogin" component={UserLogin} options={{ headerShown: true }} />
-        <Stack.Screen name="UserRegister" component={UserRegister} options={{ headerShown: true }} />
-        <Stack.Screen name="MechLogin" component={MechLogin} options={{ headerShown: true }} />
-        <Stack.Screen name="MechRegister" component={MechRegister} options={{ headerShown: true }} />
-        <Stack.Screen name="MechHome" component={MechHome} options={{ headerShown: true }} />
-        <Stack.Screen name="UserHome" component={UserHome} options={{ headerShown: true }} />
-        <Stack.Screen name="BookAppointment" component={BookAppointment} options={{ headerShown: true }} />
-        <Stack.Screen name="Payment" component={Payment} options={{ headerShown: true }} />
+        <Stack.Screen name="Welcome" component={Welcome} options={{ headerShown: false }} />
+        <Stack.Screen name="PreUserLogin" component={PreUserLogin} options={{ headerShown: false }} />
+        <Stack.Screen name="PreMechLogin" component={PreMechLogin} options={{ headerShown: false }} />
+        <Stack.Screen name="UserLogin" component={UserLogin} options={{ headerShown: false }} />
+        <Stack.Screen name="UserRegister" component={UserRegister} options={{ headerShown: false }} />
+        <Stack.Screen name="MechLogin" component={MechLogin} options={{ headerShown: false }} />
+        <Stack.Screen name="MechRegister" component={MechRegister} options={{ headerShown: false }} />
+        <Stack.Screen name="MechHome" component={MechHome} options={{ headerShown: false }} />
+        <Stack.Screen name="UserHome" component={UserHome} options={{ headerShown: false }} />
+        <Stack.Screen name="BookAppointment" component={BookAppointment} options={{ headerShown: false }} />
+        <Stack.Screen name="Payment" component={Payment} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
