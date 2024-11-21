@@ -48,10 +48,18 @@ export const styles = StyleSheet.create({
       width: Dimensions.get('window').width - 50,
     },
     modal1: {
-      flex: 1,
-      backgroundColor: '#fff',
-      alignItems: 'left',
-      justifyContent: 'center',
+      backgroundColor: "white",
+      borderRadius: 15,
+      padding: 20,
+      justifyContent: "center",
+      alignItems: "center",
+      
+    },
+    modal1Header: {
+      fontSize: 24,
+      fontWeight: "bold",
+      marginBottom: 20,
+      textAlign: "center",
     },
     modalDesc: {
       paddingLeft: 15,

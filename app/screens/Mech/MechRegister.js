@@ -123,7 +123,7 @@ function MechRegister({navigation}) {
 
       <Modal isVisible={isModalVisible}>
         <View style={styles.modal1}>
-          <Text style={[styles.header2, styles.modalDesc]}>Let's get to know you.</Text>
+          <Text style={styles.modal1Header}>Let's get to know you.</Text>
 
           <Text style={styles.modalDesc}>First Name</Text>
           <TextInput style={styles.modalInput} value={firstName} placeholder='John' autoCapitalize='none' onChangeText={(text) => setFirstName(text)}></TextInput>

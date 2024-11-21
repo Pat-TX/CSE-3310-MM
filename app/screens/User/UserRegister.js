@@ -123,7 +123,7 @@ function UserRegister({ navigation }) {
 
       <Modal isVisible={isModalVisible}>
         <View style={styles.modal1}>
-          <Text style={[styles.header2, styles.modalDesc]}>Welcome in!</Text>
+          <Text style={styles.modal1Header}>Welcome in!</Text>
 
           <Text style={styles.modalDesc}>First Name</Text>
           <TextInput
