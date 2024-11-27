@@ -2,10 +2,8 @@ import React, { useState } from "react";
 import {
   SafeAreaView,
   View,
-  StyleSheet,
   Text,
   TouchableOpacity,
-  Dimensions,
   Image,
   TextInput,
   ActivityIndicator,
@@ -13,21 +11,19 @@ import {
 import { FIREBASE_AUTH, FIREBASE_DB } from "../../../FirebaseConfig";
 import { signInWithEmailAndPassword, getAuth } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
-import { styles } from "../style";
+import { styles } from "../newstyle";
 
 function MechLogin({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const auth = getAuth();
-
   const db = FIREBASE_DB;
 
   const signIn = async () => {
     setLoading(true);
     try {
       const response = await signInWithEmailAndPassword(auth, email, password);
-
       const docRef = doc(db, "mechanics", auth.currentUser.uid);
       const docSnapshot = await getDoc(docRef);
 
@@ -46,54 +42,56 @@ function MechLogin({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <TouchableOpacity
-        style={styles.goBackButton}
-        onPress={() => navigation.goBack()}
-      >
-        <Text style={styles.goBackText}>Go Back</Text>
-      </TouchableOpacity>
-      <Image
-        style={styles.logo}
-        source={require("../../assets/MobileMech.png")}
-      />
+      <View style={styles.topSection}>
+        <TouchableOpacity
+          style={styles.goBackButton}
+          onPress={() => navigation.goBack()}
+        >
+          <Text style={styles.goBackText}>Go Back</Text>
+        </TouchableOpacity>
+        <Image
+          style={styles.logo}
+          source={require('../../assets/repair.jpg')}
+        />
+        <Text style={styles.appName}>MOBILE MECH</Text>
+      </View>
 
-      <Text style={styles.header1}>Login</Text>
+      <View style={styles.box}>
+        <Text style={styles.header1}>Login</Text>
+        <TextInput
+          style={styles.input}
+          value={email}
+          placeholder="Email"
+          autoCapitalize="none"
+          onChangeText={(text) => setEmail(text)}
+        />
+        <TextInput
+          style={styles.input}
+          value={password}
+          placeholder="Password"
+          autoCapitalize="none"
+          onChangeText={(text) => setPassword(text)}
+          secureTextEntry={true}
+        />
 
-      <TextInput
-        style={styles.input}
-        value={email}
-        placeholder="Email"
-        autoCapitalize="none"
-        onChangeText={(text) => setEmail(text)}
-      ></TextInput>
-      <TextInput
-        style={styles.input}
-        value={password}
-        placeholder="Password"
-        autoCapitalize="none"
-        onChangeText={(text) => setPassword(text)}
-        secureTextEntry={true}
-      ></TextInput>
-
-      {loading ? (
-        <ActivityIndicator size="large" color="#0000ff" />
-      ) : (
-        <>
-          <TouchableOpacity
-            style={styles.buttonStyle}
-            onPress={() => {
-              signIn();
-            }}
-          >
-            <Text style={styles.buttonText}>Login</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{ marginTop: 10 }}
-          >
-            <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
-          </TouchableOpacity>
-        </>
-      )}
+        {loading ? (
+          <ActivityIndicator size="large" color="#0000ff" />
+        ) : (
+          <>
+            <TouchableOpacity
+              style={styles.buttonStyle}
+              onPress={() => {
+                signIn();
+              }}
+            >
+              <Text style={styles.buttonText}>Login</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={{ marginTop: 10 }}>
+              <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
+            </TouchableOpacity>
+          </>
+        )}
+      </View>
     </SafeAreaView>
   );
 }

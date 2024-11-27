@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { SafeAreaView, View, StyleSheet, Text, TouchableOpacity, Dimensions, Image, TextInput, ActivityIndicator } from 'react-native';
 import { FIREBASE_AUTH, FIREBASE_DB } from '../../../FirebaseConfig';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { styles } from '../style';
+import { styles } from '../newstyle';
 import Modal from "react-native-modal";
 import { MultiSelect } from 'react-native-element-dropdown';
 import { doc, setDoc } from 'firebase/firestore';
@@ -95,72 +95,118 @@ function MechRegister({navigation}) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <TouchableOpacity
-        style={styles.goBackButton}
-        onPress={() => navigation.goBack()}
-      >
-        <Text style={styles.goBackText}>Go Back</Text>
-      </TouchableOpacity>
-      <Image
-        style={styles.logo}
-        source={require('../../assets/MobileMech.png')}
-      />
+      <View style={styles.topSection}>
+        <TouchableOpacity
+          style={styles.goBackButton}
+          onPress={() => navigation.goBack()}
+        >
+          <Text style={styles.goBackText}>Go Back</Text>
+        </TouchableOpacity>
+        <Image
+          style={styles.logo}
+          source={require('../../assets/MobileMech.png')}
+        />
+        <Text style={styles.appName}>MOBILE MECH</Text>
+      </View>
 
-      <Text style={styles.header1}>Registration</Text>
+      <View style={styles.box}>
+        <Text style={styles.header1}>Registration</Text>
 
-      <TextInput style={styles.input} value={email} placeholder='Email' autoCapitalize='none' onChangeText={(text) => setEmail(text)} ></TextInput>
-      <TextInput style={styles.input} value={password} placeholder='Password' autoCapitalize='none' onChangeText={(text) => setPassword(text)} secureTextEntry={true} ></TextInput>
+        <TextInput
+          style={styles.input}
+          value={email}
+          placeholder='Email'
+          autoCapitalize='none'
+          onChangeText={(text) => setEmail(text)}
+        />
+        <TextInput
+          style={styles.input}
+          value={password}
+          placeholder='Password'
+          autoCapitalize='none'
+          onChangeText={(text) => setPassword(text)}
+          secureTextEntry={true}
+        />
 
-      {loading ? (
-        <ActivityIndicator size="large" color="#0000ff" />
-      ) : (
-        <>
-          <TouchableOpacity style={styles.buttonStyle} onPress={() => { signUp(); }}>
+        {loading ? (
+          <ActivityIndicator size='large' color='#0000ff' />
+        ) : (
+          <TouchableOpacity
+            style={styles.buttonStyle}
+            onPress={() => {
+              signUp();
+            }}
+          >
             <Text style={styles.buttonText}>Sign up</Text>
           </TouchableOpacity>
-        </>
-      )}
+        )}
 
-      <Modal isVisible={isModalVisible}>
-        <View style={styles.modal1}>
-          <Text style={styles.modal1Header}>Let's get to know you.</Text>
+        <Modal isVisible={isModalVisible}>
+          <View style={styles.modal}>
+            <Text style={styles.modalHeader}>Let's get to know you.</Text>
 
-          <Text style={styles.modalDesc}>First Name</Text>
-          <TextInput style={styles.modalInput} value={firstName} placeholder='John' autoCapitalize='none' onChangeText={(text) => setFirstName(text)}></TextInput>
-          <Text style={styles.modalDesc}>Last Name</Text>
-          <TextInput style={styles.modalInput} value={lastName} placeholder='Smith' autoCapitalize='none' onChangeText={(text) => setLastName(text)}></TextInput>
-          <Text style={styles.modalDesc}>Location</Text>
-          <TextInput style={styles.modalInput} value={serviceArea} placeholder='Fort Worth, TX' autoCapitalize='none' onChangeText={(text) => setServiceArea(text)}></TextInput>
-          <Text style={styles.modalDesc}>Services</Text>
+            <Text style={styles.modalDesc}>First Name</Text>
+            <TextInput
+              style={styles.modalInput}
+              value={firstName}
+              placeholder='John'
+              autoCapitalize='none'
+              onChangeText={(text) => setFirstName(text)}
+            />
+            <Text style={styles.modalDesc}>Last Name</Text>
+            <TextInput
+              style={styles.modalInput}
+              value={lastName}
+              placeholder='Smith'
+              autoCapitalize='none'
+              onChangeText={(text) => setLastName(text)}
+            />
+            <Text style={styles.modalDesc}>Location</Text>
+            <TextInput
+              style={styles.modalInput}
+              value={serviceArea}
+              placeholder='Fort Worth, TX'
+              autoCapitalize='none'
+              onChangeText={(text) => setServiceArea(text)}
+            />
+            <Text style={styles.modalDesc}>Services</Text>
 
-          <MultiSelect
-            style={styles.dropdown}
-            placeholderStyle={styles.placeholderStyle}
-            selectedTextStyle={styles.selectedTextStyle}
-            inputSearchStyle={styles.inputSearchStyle}
-            iconStyle={styles.iconStyle}
-            data={mechServices}
-            search
-            maxHeight={300}
-            labelField="label"
-            valueField="value"
-            placeholder="Select services"
-            searchPlaceholder="Search..."
-            value={servicesOffered}
-            onChange={item => {
-              setServicesOffered(item);
-            }}
-            selectedStyle={styles.selectedStyle}
-          />
+            <MultiSelect
+              style={styles.dropdown}
+              placeholderStyle={styles.placeholderStyle}
+              selectedTextStyle={styles.selectedTextStyle}
+              inputSearchStyle={styles.inputSearchStyle}
+              iconStyle={styles.iconStyle}
+              data={mechServices}
+              search
+              maxHeight={300}
+              labelField='label'
+              valueField='value'
+              placeholder='Select services'
+              searchPlaceholder='Search...'
+              value={servicesOffered}
+              onChange={(item) => {
+                setServicesOffered(item);
+              }}
+              selectedStyle={styles.selectedStyle}
+            />
 
-          <TouchableOpacity style={styles.buttonStyle} onPress={() => { addToDB(); toggleModal(); navigation.navigate('MechLogin');}}>
-            <Text style={styles.buttonText}>Submit</Text>
-          </TouchableOpacity>
-        </View>
-      </Modal>
-
+            <TouchableOpacity
+              style={styles.buttonStyle}
+              onPress={() => {
+                addToDB();
+                toggleModal();
+                navigation.navigate('MechLogin');
+              }}
+            >
+              <Text style={styles.buttonText}>Submit</Text>
+            </TouchableOpacity>
+          </View>
+        </Modal>
+      </View>
     </SafeAreaView>
   );
 }
+
 
 export default MechRegister;

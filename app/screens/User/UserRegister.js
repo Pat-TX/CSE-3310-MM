@@ -2,20 +2,18 @@ import React, { useState } from "react";
 import {
   SafeAreaView,
   View,
-  StyleSheet,
   Text,
   TouchableOpacity,
-  Dimensions,
   Image,
   TextInput,
   ActivityIndicator,
 } from "react-native";
 import { FIREBASE_AUTH, FIREBASE_DB } from "../../../FirebaseConfig";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { styles } from "../style";
 import Modal from "react-native-modal";
 import { doc, setDoc } from "firebase/firestore";
 import { customersCollection } from "../../../FirebaseConfig";
+import { styles } from "../newstyle";
 
 function UserRegister({ navigation }) {
   // For auth
@@ -62,14 +60,13 @@ function UserRegister({ navigation }) {
   const addToDB = async () => {
     try {
       const docRef = doc(customersCollection, auth.currentUser.uid);
-      const response = await setDoc(docRef, {
+      await setDoc(docRef, {
         uid: auth.currentUser.uid,
         firstName,
         lastName,
         area,
         role: "customer",
       });
-      console.log(response);
     } catch (error) {
       console.log(error);
     }
@@ -77,49 +74,49 @@ function UserRegister({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <TouchableOpacity
-        style={styles.goBackButton}
-        onPress={() => navigation.goBack()}
-      >
-        <Text style={styles.goBackText}>Go Back</Text>
-      </TouchableOpacity>
-      <Image
-        style={styles.logo}
-        source={require("../../assets/MobileMech.png")}
-      />
+      <View style={styles.topSection}>
+        <TouchableOpacity
+          style={styles.goBackButton}
+          onPress={() => navigation.goBack()}
+        >
+          <Text style={styles.goBackText}>Go Back</Text>
+        </TouchableOpacity>
+        <Image
+          style={styles.logo}
+          source={require("../../assets/repair.jpg")}
+        />
+        <Text style={styles.appName}>MOBILE MECH</Text>
+      </View>
 
-      <Text style={styles.header1}>Registration</Text>
+      <View style={styles.box}>
+        <Text style={styles.header1}>Registration</Text>
+        <TextInput
+          style={styles.input}
+          value={email}
+          placeholder="Email"
+          autoCapitalize="none"
+          onChangeText={(text) => setEmail(text)}
+        />
+        <TextInput
+          style={styles.input}
+          value={password}
+          placeholder="Password"
+          autoCapitalize="none"
+          onChangeText={(text) => setPassword(text)}
+          secureTextEntry={true}
+        />
 
-      <TextInput
-        style={styles.input}
-        value={email}
-        placeholder="Email"
-        autoCapitalize="none"
-        onChangeText={(text) => setEmail(text)}
-      ></TextInput>
-      <TextInput
-        style={styles.input}
-        value={password}
-        placeholder="Password"
-        autoCapitalize="none"
-        onChangeText={(text) => setPassword(text)}
-        secureTextEntry={true}
-      ></TextInput>
-
-      {loading ? (
-        <ActivityIndicator size="large" color="#0000ff" />
-      ) : (
-        <>
+        {loading ? (
+          <ActivityIndicator size="large" color="#0000ff" />
+        ) : (
           <TouchableOpacity
             style={styles.buttonStyle}
-            onPress={() => {
-              signUp();
-            }}
+            onPress={signUp}
           >
             <Text style={styles.buttonText}>Sign up</Text>
           </TouchableOpacity>
-        </>
-      )}
+        )}
+      </View>
 
       <Modal isVisible={isModalVisible}>
         <View style={styles.modal1}>
@@ -132,7 +129,7 @@ function UserRegister({ navigation }) {
             placeholder="John"
             autoCapitalize="none"
             onChangeText={(text) => setFirstName(text)}
-          ></TextInput>
+          />
           <Text style={styles.modalDesc}>Last Name</Text>
           <TextInput
             style={styles.modalInput}
@@ -140,7 +137,7 @@ function UserRegister({ navigation }) {
             placeholder="Smith"
             autoCapitalize="none"
             onChangeText={(text) => setLastName(text)}
-          ></TextInput>
+          />
           <Text style={styles.modalDesc}>Location</Text>
           <TextInput
             style={styles.modalInput}
@@ -148,7 +145,7 @@ function UserRegister({ navigation }) {
             placeholder="Fort Worth, TX"
             autoCapitalize="none"
             onChangeText={(text) => setArea(text)}
-          ></TextInput>
+          />
 
           <TouchableOpacity
             style={styles.buttonStyle}

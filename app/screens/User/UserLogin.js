@@ -16,7 +16,7 @@ import {
   getAuth,
   onAuthStateChanged,
 } from "firebase/auth";
-import { styles } from "../style";
+import { styles } from "../newstyle";
 import { doc, getDoc } from "firebase/firestore";
 
 function UserLogin({ navigation }) {
@@ -50,56 +50,57 @@ function UserLogin({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      <TouchableOpacity
-        style={styles.goBackButton}
-        onPress={() => navigation.goBack()}
-      >
-        <Text style={styles.goBackText}>Go Back</Text>
-      </TouchableOpacity>
-      <Image
-        style={styles.logo}
-        source={require("../../assets/MobileMech.png")}
-      />
+      <View style={styles.topSection}>
+        <TouchableOpacity
+          style={styles.goBackButton}
+          onPress={() => navigation.goBack()}
+        >
+          <Text style={styles.goBackText}>Go Back</Text>
+        </TouchableOpacity>
+        <Image
+          style={styles.logo}
+          source={require("../../assets/repair.jpg")}
+        />
+        <Text style={styles.appName}>MOBILE MECH</Text>
+      </View>
 
-      <Text style={styles.header1}>Login</Text>
+      <View style={styles.box}>
+        <Text style={styles.header1}>Login</Text>
+        <TextInput
+          style={styles.input}
+          value={email}
+          placeholder="Email"
+          autoCapitalize="none"
+          onChangeText={(text) => setEmail(text)}
+        />
+        <TextInput
+          style={styles.input}
+          value={password}
+          placeholder="Password"
+          autoCapitalize="none"
+          onChangeText={(text) => setPassword(text)}
+          secureTextEntry={true}
+        />
 
-      <TextInput
-        style={styles.input}
-        value={email}
-        placeholder="Email"
-        autoCapitalize="none"
-        onChangeText={(text) => setEmail(text)}
-      ></TextInput>
-      <TextInput
-        style={styles.input}
-        value={password}
-        placeholder="Password"
-        autoCapitalize="none"
-        onChangeText={(text) => setPassword(text)}
-        secureTextEntry={true}
-      ></TextInput>
-
-      {loading ? (
-        <ActivityIndicator size="large" color="#0000ff" />
-      ) : (
-        <>
-          <TouchableOpacity
-            style={styles.buttonStyle}
-            onPress={() => {
-              signIn();
-            }}
-          >
-            <Text style={styles.buttonText}>Login</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{ marginTop: 10 }}
-          >
-            <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
-          </TouchableOpacity>
-        </>
-      )}
+        {loading ? (
+          <ActivityIndicator size="large" color="#0000ff" />
+        ) : (
+          <>
+            <TouchableOpacity
+              style={styles.buttonStyle}
+              onPress={signIn}
+            >
+              <Text style={styles.buttonText}>Login</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={{ marginTop: 10 }}>
+              <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
+            </TouchableOpacity>
+          </>
+        )}
+      </View>
     </SafeAreaView>
   );
 }
+
 
 export default UserLogin;
