@@ -212,4 +212,9 @@ input: {
     height: 150,
     margin: 100,
   },
+  placeholderText: {
+    fontSize: 16,
+    color: '#555', // A lighter color to indicate placeholder
+    marginBottom: 10,
+  },
 });

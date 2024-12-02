@@ -23,6 +23,7 @@ export const styles = StyleSheet.create({
     //borderBottomLeftRadius: 30,
     //borderBottomRightRadius: 30,
   },
+
   header: {
     paddingHorizontal: 16,
   },

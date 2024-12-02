@@ -2,19 +2,22 @@ import React, { useState } from 'react';
 import {
   SafeAreaView,
   View,
-  StyleSheet,
   Text,
   TouchableOpacity,
   Image,
 } from 'react-native';
-import { styles } from '../newstyle'; 
+import { styles } from '../newstyle';
 
 function Payment({ navigation }) {
   const [paymentMethod, setPaymentMethod] = useState(null);
 
   const selectPaymentMethod = (method) => {
     setPaymentMethod(method);
-    alert(`Payment method selected: ${method}`);
+    if (method === 'credit') {
+      navigation.navigate('Credit');
+    } else {
+      alert(`Payment method selected: ${method}`);
+    }
   };
 
   return (

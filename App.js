@@ -13,6 +13,7 @@ import UserHome from "./app/screens/User/UserHome";
 import MechHome from "./app/screens/Mech/MechHome";
 import BookAppointment from "./app/screens/User/BookAppointment";
 import Payment from "./app/screens/User/payment";
+import Credit from "./app/screens/User/Credit";
 
 const Stack = createNativeStackNavigator();
 
@@ -34,6 +35,7 @@ export default function App() {
         <Stack.Screen name="UserHome" component={UserHome} options={{ headerShown: false }} />
         <Stack.Screen name="BookAppointment" component={BookAppointment} options={{ headerShown: false }} />
         <Stack.Screen name="Payment" component={Payment} options={{ headerShown: false }} />
+        <Stack.Screen name="Credit" component={Credit} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
