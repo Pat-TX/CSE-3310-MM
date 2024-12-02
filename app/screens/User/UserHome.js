@@ -291,11 +291,11 @@ function Search() {
           >
             <View style={styles.modalContainer}>
               <Text style={styles.modalTitle}>Choose an option</Text>
-
+              <View style={styles.box}>
               {selectMechanic && (
                 <>
                   <TouchableOpacity
-                    style={styles.buttonStyle}
+                    style={styles.newbtnstyle}
                     onPress={() => {
                       setoptions(false);
                       alert(`Contacting ${selectMechanic.firstName} ${selectMechanic.lastName}`);
@@ -306,7 +306,7 @@ function Search() {
 
 
                   <TouchableOpacity
-                  style={styles.buttonStyle}
+                  style={styles.newbtnstyle}
                   onPress={() => {
                   setModalVisible(false); 
                   setoptions(false); 
@@ -319,11 +319,12 @@ function Search() {
                 </>
               )}
               <TouchableOpacity
-                style={styles.buttonStyle}
+                style={styles.newbtnstyle}
                 onPress={() => setoptions(false)}
               >
                 <Text style={styles.buttonText}>Close</Text>
               </TouchableOpacity>
+            </View>
             </View>
           </Modal>
         </ScrollView>

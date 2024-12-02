@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react"; 
 import {
   StyleSheet,
   Dimensions,
@@ -9,7 +9,7 @@ import {
   TouchableWithoutFeedback,
   FlatList,
 } from "react-native";
-import { useNavigation } from '@react-navigation/native'; 
+import { useNavigation, useRoute } from '@react-navigation/native'; 
 import { FIREBASE_AUTH, FIREBASE_DB } from "../../../FirebaseConfig";
 import { doc, getDoc, addDoc, collection } from "firebase/firestore";
 import { styles } from "../mechstyle";
@@ -18,42 +18,42 @@ const { width } = Dimensions.get("window");
 
 export default function Appointments() {
   const navigation = useNavigation(); 
+  const route = useRoute();
+  const mechanicUid = route.params?.mechanicUid || null; 
   const [value, setValue] = useState(new Date());
   const [week, setWeek] = useState(0);
   const [selectedTime, setSelectedTime] = useState(null);
-  const [randomTimeSlots, setRandomTimeSlots] = useState({});
-  const [userInfo, setUserInfo] = useState({ name: "", email: "" });
+  const [userInfo, setUserInfo] = useState({ firstName: "", lastName: "" });
+  const [dailyAvailableSlots, setDailyAvailableSlots] = useState({});
   const flatListRef = useRef(null);
 
-  const generateRandomTimeSlots = () => {
-    const days = [
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-    ];
-    const slots = {};
-
-    days.forEach((day) => {
-      const numSlots = Math.floor(Math.random() * 4) + 1; // Generate between 1-4 slots
-      const startHour = 8 + Math.floor(Math.random() * 6); // Random start hour between 8 AM - 2 PM
-      slots[day] = Array.from({ length: numSlots }).map((_, i) => {
-        const hour = (startHour + i) % 12 || 12;
-        const ampm = startHour + i >= 12 ? "PM" : "AM";
-        return `${hour}:00 ${ampm}`;
-      });
-    });
-
+  // Fixed time slots from 9 AM to 5 PM with 1-hour intervals
+  const generateTimeSlots = () => {
+    const slots = [];
+    for (let hour = 9; hour < 17; hour++) {
+      const formattedHour = hour < 12 ? `${hour}:00 AM` : `${hour - 12}:00 PM`;
+      slots.push(formattedHour);
+    }
     return slots;
   };
 
   useEffect(() => {
-    setRandomTimeSlots(generateRandomTimeSlots());
+    initializeSlotsForWeek();
     fetchUserInfo();
   }, []);
+
+  const initializeSlotsForWeek = () => {
+    const slots = generateTimeSlots();
+    const newSlots = {};
+
+    // Initialize slots for the next 7 days
+    for (let i = 0; i < 7; i++) {
+      const date = addDays(new Date(), i);
+      newSlots[date.toDateString()] = [...slots];
+    }
+
+    setDailyAvailableSlots(newSlots);
+  };
 
   const fetchUserInfo = async () => {
     const user = FIREBASE_AUTH.currentUser;
@@ -62,12 +62,12 @@ export default function Appointments() {
       return;
     }
     try {
-      const userDoc = doc(FIREBASE_DB, "users", user.uid);
+      const userDoc = doc(FIREBASE_DB, "customers", user.uid);
       const docSnap = await getDoc(userDoc);
-
+  
       if (docSnap.exists()) {
-        const { name, email } = docSnap.data();
-        setUserInfo({ name, email });
+        const { firstName, lastName } = docSnap.data();
+        setUserInfo({ firstName, lastName });
       } else {
         console.error("User document does not exist");
       }
@@ -81,33 +81,38 @@ export default function Appointments() {
       alert("Please select a time slot.");
       return;
     }
-
+  
     const user = FIREBASE_AUTH.currentUser;
     if (!user) {
       alert("You must be logged in to book an appointment.");
       return;
     }
 
+
+  
     try {
       const appointmentsCollection = collection(FIREBASE_DB, "appointments");
       const appointment = {
-        name: userInfo.name,
-        email: userInfo.email,
+        firstName: userInfo.firstName || "",
+        lastName: userInfo.lastName || "",
         date: value.toDateString(),
         time: selectedTime,
+        mechanicId: mechanicUid, // Use mechanicUid from route params
         status: "Pending",
       };
-
+  
       await addDoc(appointmentsCollection, appointment);
-
-      // alert(
-      //   `Appointment booked for ${value.toDateString()} at ${selectedTime}`
-      // );
-      
+  
+      setDailyAvailableSlots((prevSlots) => {
+        const updatedSlots = { ...prevSlots };
+        updatedSlots[value.toDateString()] = updatedSlots[
+          value.toDateString()
+        ].filter((slot) => slot !== selectedTime);
+        return updatedSlots;
+      });
+  
       setSelectedTime(null);
-      
-      // Navigate to Payment screen
-      navigation.navigate('Payment');
+      navigation.navigate("Payment");
     } catch (error) {
       console.error("Error booking appointment:", error);
     }
@@ -163,7 +168,8 @@ export default function Appointments() {
     }, 100);
   };
 
-  const availableSlots = randomTimeSlots[value.toLocaleDateString("en-US", { weekday: "long" })] || [];
+  const availableSlots =
+    dailyAvailableSlots[value.toDateString()] || generateTimeSlots();
 
   return (
     <SafeAreaView style={styles.container}>
@@ -203,8 +209,8 @@ export default function Appointments() {
                       style={[
                         styles.item,
                         isActive && {
-                          backgroundColor: "#111",
-                          borderColor: "#111",
+                          backgroundColor: "#a363ff",
+                          borderColor: "#a363ff",
                         },
                       ]}
                     >
@@ -243,7 +249,7 @@ export default function Appointments() {
                 onPress={() => setSelectedTime(slot)}
                 style={[
                   styles.slotCard,
-                  selectedTime === slot && { backgroundColor: "#111" },
+                  selectedTime === slot && { backgroundColor: "#a363ff" },
                 ]}
               >
                 <Text
