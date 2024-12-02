@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo } from 'react';
+import React, { useState, useRef, useMemo, useEffect } from 'react';
 import {
   Dimensions,
   SafeAreaView,
@@ -9,20 +9,50 @@ import {
   FlatList,
 } from 'react-native';
 
+import { FIREBASE_DB } from '../../../FirebaseConfig';
+import { collection, query, where, onSnapshot, Timestamp } from 'firebase/firestore';
 import { styles } from '../mechstyle';
-const { width } = Dimensions.get('window');
 
-const sampleAppointments = [
-  { id: 1, customer: 'Margaret Roche', time: '10:00 AM', service: 'Oil Change', contact: '123-456-7890', date: new Date() },
-  { id: 2, customer: 'Sujana Kabir', time: '11:30 AM', service: 'Tire Replacement', contact: '903-654-2024', date: new Date() },
-  { id: 3, customer: 'Jonathan Hor', time: '2:00 PM', service: 'Electrical System Repair', contact: '555-555-5555', date: new Date(new Date().setDate(new Date().getDate() + 2)) },
-];
+const { width } = Dimensions.get('window');
 
 export default function MechanicAppointments() {
   const [value, setValue] = useState(new Date());
   const [week, setWeek] = useState(0);
+  const [appointments, setAppointments] = useState([]);
   const [completedAppointments, setCompletedAppointments] = useState({});
   const flatListRef = useRef(null);
+
+  // Fetch appointments from Firestore
+  useEffect(() => {
+    const fetchAppointments = () => {
+      try {
+        const startOfDay = Timestamp.fromDate(new Date(value.setHours(0, 0, 0, 0)));
+        const endOfDay = Timestamp.fromDate(new Date(value.setHours(23, 59, 59, 999)));
+
+        const appointmentsRef = collection(FIREBASE_DB, 'appointments');
+        const q = query(
+          appointmentsRef,
+          where('date', '>=', startOfDay),
+          where('date', '<=', endOfDay)
+        );
+
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+          const fetchedAppointments = querySnapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+          setAppointments(fetchedAppointments);
+        });
+
+        return unsubscribe; // Cleanup on component unmount
+      } catch (error) {
+        console.error('Error fetching appointments:', error);
+      }
+    };
+
+    const unsubscribe = fetchAppointments();
+    return () => unsubscribe && unsubscribe();
+  }, [value]);
 
   const getStartOfWeek = (date) => {
     const day = date.getDay();
@@ -74,21 +104,19 @@ export default function MechanicAppointments() {
     }, 100);
   };
 
-  const filteredAppointments = sampleAppointments.filter(
-    (appointment) => appointment.date.toDateString() === value.toDateString()
-  );
-
   const markAsCompleted = (id) => {
     setCompletedAppointments((prev) => ({ ...prev, [id]: true }));
   };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.title}>My Schedule</Text>
+      <View style={styles.container1}>
+        {/* Top Section */}
+        <View style={styles.topSection}>
+          <Text style={[styles.title, { color: '#fff' }]}>My Schedule</Text>
         </View>
 
+        {/* Picker Section */}
         <View style={styles.picker}>
           <FlatList
             ref={flatListRef}
@@ -107,8 +135,7 @@ export default function MechanicAppointments() {
             renderItem={({ item: dates }) => (
               <View style={styles.itemRow}>
                 {dates.map((item, dateIndex) => {
-                  const isActive =
-                    value.toDateString() === item.date.toDateString();
+                  const isActive = value.toDateString() === item.date.toDateString();
                   return (
                     <TouchableWithoutFeedback
                       key={dateIndex}
@@ -117,16 +144,13 @@ export default function MechanicAppointments() {
                       <View
                         style={[
                           styles.item,
-                          isActive && {
-                            backgroundColor: '#111',
-                            borderColor: '#111',
-                          },
+                          isActive && styles.activeItem, // Apply active styles
                         ]}
                       >
                         <Text
                           style={[
                             styles.itemWeekday,
-                            isActive && { color: '#fff' },
+                            isActive && styles.activeItemText, // Apply active text styles
                           ]}
                         >
                           {item.weekday}
@@ -134,7 +158,7 @@ export default function MechanicAppointments() {
                         <Text
                           style={[
                             styles.itemDate,
-                            isActive && { color: '#fff' },
+                            isActive && styles.activeItemText, // Apply active text styles
                           ]}
                         >
                           {item.date.getDate()}
@@ -148,25 +172,26 @@ export default function MechanicAppointments() {
           />
         </View>
 
+        {/* Appointments Section */}
         <View style={{ flex: 1, paddingHorizontal: 16, paddingVertical: 24 }}>
           <Text style={styles.subtitle}>
             Appointments for {value.toDateString()}
           </Text>
           <FlatList
-            data={filteredAppointments}
+            data={appointments}
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => {
               const isCompleted = completedAppointments[item.id];
               return (
                 <View style={styles.appointmentCard}>
-                  <Text style={styles.cardTitle}>{item.customer}</Text>
+                  <Text style={styles.cardTitle}>{item.name}</Text>
                   <Text style={styles.cardText}>Time: {item.time}</Text>
                   <Text style={styles.cardText}>Service: {item.service}</Text>
                   <Text style={styles.cardText}>Contact: {item.contact}</Text>
                   <TouchableOpacity
                     style={[
                       styles.actionButton,
-                      isCompleted && { backgroundColor: '#4CAF50' }, 
+                      isCompleted && { backgroundColor: '#180226' },
                     ]}
                     onPress={() => markAsCompleted(item.id)}
                     disabled={isCompleted}
@@ -174,7 +199,7 @@ export default function MechanicAppointments() {
                     <Text
                       style={[
                         styles.actionButtonText,
-                        isCompleted && { color: '#fff' }, 
+                        isCompleted && { color: '#fff' },
                       ]}
                     >
                       {isCompleted ? 'Completed' : 'Mark as Completed'}
@@ -184,9 +209,7 @@ export default function MechanicAppointments() {
               );
             }}
             ListEmptyComponent={
-              <Text style={styles.noAppointments}>
-                No upcoming appointments
-              </Text>
+              <Text style={styles.noAppointments}>No upcoming appointments</Text>
             }
           />
         </View>
