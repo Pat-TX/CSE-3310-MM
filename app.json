@@ -18,10 +18,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./app/assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.pattx.CSE3310MM"
     },
     "web": {
       "favicon": "./app/assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "59d319fc-b721-4381-a85f-8c1de16573eb"
+      }
     }
   }
 }
